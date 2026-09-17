@@ -14,18 +14,19 @@
   title=Definition: #1
 }
 
-\newtcolorbox{warning}{
+\newtcolorbox{warning}[1][]{
   colback=red!5!white,
   colframe=red!75!black,
   fonttitle=\bfseries,
-  title=Warning
+  title=#1
 }
 
 \newtcolorbox{note}[1][]{
   colback=green!5!white,
   colframe=green!75!black,
   fonttitle=\bfseries,
-  title=#1
+  title=#1,
+  breakable
 }
 
 \newtcolorbox{note_special}[1][]{
@@ -516,4 +517,341 @@ $$
     \hat{y}_B
 \end{bmatrix}
 $$
+
+\subsection{Multinomial logistic regression}
+\subsubsection{One-vs-rest classification}
+How can we generalize logistic regression to multi-class regression? \textbf{One-vs-rest classification}.
+\begin{itemize}
+    \item Train $K$ binary logistic regression models.
+    \item Each classifier is trained to classify one class against all other classes.
+    \item To make a prediction for a data point:
+    \begin{itemize}
+        \item All $K$ classifiers are used.
+        \item Each gives us a probability $P(y=1|\mathbf{x})$ of its target class.
+        \item Take the class with the highest probability as the prediction.
+    \end{itemize}
+\end{itemize}
+For each class $c\in\{1,\dots,K\}$, we have a logistic regression model with its own weight vector $\mathbf{w}_c$ and bias term $b_c$. It is trained to maximize $P(y=1|\mathbf{x})=\sigma(\mathbf{w}_c\cdot\mathbf{x}+b_c)$ for class $c$.
+\begin{note}[Note]
+Because the sigmoid function is monotonically increasing, we don't need the probabilities. The weighted sums are enough! \\\\
+Higher $\mathbf{w}_c\cdot\mathbf{x}+b_c\Rightarrow$ Higher $\sigma(\mathbf{w}_c\cdot\mathbf{x}+b_c)$.
+\end{note}
+$\quad$\\[-1em]
+To make a final decision, we compute all linear scores:
+$$
+s_c(\mathbf{x})=\mathbf{w}_c\cdot\mathbf{x}+b_c\quad\text{for each class }c\in\{1,\dots,K\}
+$$
+and then choose the predicted class as the one with the largest score:
+$$
+\hat{y}=\underset{c\in\{1,\dots,K\}}{\text{argmax}}\hspace{2pt}s_c(\mathbf{x})
+$$
+where $\hat{y}$ is the predicted class.
+\begin{warning}[Disadvantages]
+We need to train $K$ different model for one task. In return, we get $K$ unrelated probabilities that don't sum to 1.
+\end{warning}
+
+\subsubsection{Multinomial logistic regression}
+For multi-class classification, we have $y\in\{1,\dots,K\}$:
+$$
+\begin{bmatrix}
+    P(y=1|\mathbf{x})\\
+    P(y=2|\mathbf{x})\\
+    \vdots \\
+    P(y=K|\mathbf{x})
+\end{bmatrix}
+$$
+So instead of a single probability for the positive class, we need to output probabilities for each class: $P(y=1|\mathbf{x}),\dots,P(y=K|\mathbf{x})$ with
+$$
+\boxed{\sum_{k=1}^{K}P(y=k|\mathbf{x})=1}
+$$
+Instead of the sigmoid function, we can use the \textbf{softmax function} to squeeze $K$ arbitrary values into probabilities summing to 1.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/MNLR_1.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+For input $\mathbf{x}$, the score (also called \textbf{logit}) for class $c$ is $z_c=\mathbf{w}_c\cdot\mathbf{x}+b_c$. But probabilities need to be positive, so take the exponential $e^{z_c}$. But probabilities also need to sum to 1, so normalize. \\\\
+The softmax function:
+$$
+\text{softmax}(z_i)=\frac{\text{exp}(z_i)}{\sum_{k=1}^{K}\text{exp}(z_k)}\quad\text{for }1\leq i\leq K
+$$
+This gives the softmax regression model:
+$$
+f(\mathbf{x};W,b)=\begin{bmatrix}
+    P(y=1|\mathbf{x};W,b) \\
+    P(y=2|\mathbf{x};W,b) \\
+    \vdots \\
+    P(y=K|\mathbf{x};W,b)
+\end{bmatrix}
+=\frac{1}{\sum_{k=1}^K \text{exp}(\mathbf{w}_{k}^{\top}\cdot\mathbf{x}+b_k)}\begin{bmatrix}
+    \text{exp}(\mathbf{w}_{1}^{\top}\cdot\mathbf{x}+b_1) \\
+    \text{exp}(\mathbf{w}_{2}^{\top}\cdot\mathbf{x}+b_2) \\
+    \vdots \\
+    \text{exp}(\mathbf{w}_K^{\top}\cdot\mathbf{x}+b_K)
+\end{bmatrix}
+=\text{softmax}(W\mathbf{x}+\mathbf{b})
+$$
+The model parameters are $W$ and $\mathbf{b}$. $W$ is a matrix with each row being the weight vector for a class. $\mathbf{b}$ is a vector of bias terms for each class.
+$$
+W=\begin{bmatrix}
+    \mathbf{w}_1^{\top} \\
+    \mathbf{w}_2^{\top} \\
+    \vdots \\
+    \mathbf{w}_K^{\top}
+\end{bmatrix}
+\quad\quad
+\mathbf{b}=\begin{bmatrix}
+    b_1 \\
+    b_2 \\
+    \vdots \\
+    b_K
+\end{bmatrix}
+$$
+Together, $\mathbf{w}_k$ and $b_k$ define the linear decision boundary for class $k$. \\\\
+The cross-entropy loss is also generalized to multiple classes. Now, $\hat{y}$ is a vector of $K$ probabilities. Let $y$ be a vector of targets, setting $y_c=1$ for the true class and $y_c=0$ for all other classes.
+$$
+L_{\text{CE}}=-\sum_{k=1}^{K}y_k\log\hat{y}_k=-\sum_{k=1}^{K}y_k\log P(y=k|\mathbf{x})
+$$
+This loss corresponds to what is called the negative log-likelihood. Without the minus sign, this is once again what we want to maximize with maximum likelihood estimation.
+For multinomial logistic regression, the cross-entropy loss is a function of all parameters $W,\mathbf{b}$.
+\begin{align*}
+    L_{\text{CE}}&=-\sum_{k=1}^{K}y_k\log\hat{y}_k \\
+    &=-\log\hat{y}_c\quad\text{(where }c\text{ is the correct class)} \\
+    &=-\log\hat{P}(y_c=1|\mathbf{x}) \\
+    &=-\log\frac{\text{exp}(\mathbf{w}_c\cdot\mathbf{x}+b_c)}{\sum_{k=1}^{K}\text{exp}(\mathbf{w}_k\cdot\mathbf{x}+b_k)}
+\end{align*}
+
+\subsubsection{Imbalanced classes}
+For binary classification, the problem is framed as mapping inputs $x$ to positive or negative labels. In a \textbf{balanced dataset}, both labels appear in \textbf{roughly equal numbers}. In an \textbf{imbalanced dataset}, \textbf{one label occurs much more often} than the other.
+For example, the training set of transactions labelled fraudulent vs. legitimate can have much higher proportion of legitimate transactions.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.3\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/IC_1.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+The problem is, does your dataset contain enough minority class examples to train a model properly?
+\begin{itemize}
+    \item For mild imbalance (20\%-40\% minority) and sometimes for moderate imbalance (1\%-20\%), imbalance isn't a problem.
+    \item For extreme imbalance ($<$1\% minority), the model trains almost exclusively on one label and can't learn enough about the other label.
+\end{itemize}
+
+\subsubsection{Handling imbalanced datasets}
+\textbf{Downsampling majority class:} \\
+Reduce the number of majority examples by randomly selecting a subset of all majority examples to train on. For example, 1:10 $\to$ downsample by $1/5$ times $\to$ 1:2.
+You can perform the sampling before training starts or at the start of every epoch.
+\\\\
+\textbf{Upsampling minority class:} \\
+Keep all majority class examples but duplicate minority class to match majority class size. For example, 1:10 $\to$ upsample by 10 times $\to$ 1:1.
+\begin{warning}[Warning]
+This can lead to an \textbf{increase in the risk of overfitting} since the same minority examples are repeated multiple times!
+\end{warning}
+\begin{note}[Upsampling/downsampling is something you have to...]
+\begin{enumerate}
+    \item \textbf{Apply carefully:} it can improve performance, but it is not guaranteed to. It has trade-offs e.g. overfitting with upsampling and data loss with downsampling.
+    \item \textbf{Experiment with sampling ratios:} try different up/downsampling factors, e.g. 1:2, 1:3, 1:10, rather than assuming a perfectly balanaced dataset is alwasy best.
+    \item \textbf{Validate on a held-out validation set:} check that performance gains generalize beyond the resampled training data.
+\end{enumerate}
+\end{note}
+
+\subsection{Text classification}
+Given a document $d$ and a fixed set of classes $C=\{c_1,c_2,\dots,c_K\}$, can we accurately predict the true class $c\in C$? \\\\
+\textbf{Rule-based methods:}\\
+These are hard-coded rules based on combinations of words or other related features. The accuracy can be high if the rules are carefully refined by the expert(s), but building and maintaining these rules is expensive. \\\\
+\textbf{Machine learning methods:} \\
+For machines, given data $D$ where inputs are documents and the outputs are classes, it can effectively learn a classifier $h:X\to Y$.
+
+\subsubsection{Bag-of-words}
+In a bag-of-words approach, we represent documents with word counts ignoring order.
+\begin{enumerate}
+    \item Tokenize text into words and assign an integer ID to each unique word in the training dataset, called the vocabulary.
+    \item Count the word occurences in each document.
+    \item Each document becomes a vector of indexed counts.
+\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/BoW_1.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+Word counts can be informative features for classification tasks. In logistic regression, each feature (word) will have a weight parameter $w_i$, which encodes its influence on predictions.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/BoW_2.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+Most words never appear in a given document.
+\begin{itemize}
+    \item Vocabulary can be very large (e.g. 100k words).
+    \item Each document uses only a small fraction (100-1000 words), so most vectors are mostly zero ($>$99\%).
+    \item It is common to use sparse data structures for storage and efficiency.
+\end{itemize}
+\begin{note}[Design choices affect what ends up in your vocabulary.]
+\begin{itemize}
+    \item \textbf{Text preprocessing/cleaning:} lowercase words, remove puncuation or number if not useful.
+    \item \textbf{Tokenization:} the simple, straightforward approach is to split on whitespace characters. There are more sophisicated tokenizers available.
+    \item \textbf{Vocabulary size control:} \textit{(based on training data frequencies!)}
+    \begin{itemize}
+        \item Keep only top $N$ frequent words (tune $N$).
+        \item Don't include rare words (occurs less than some frequency threshold).
+    \end{itemize}
+    \begin{warning}[Tradeoff]
+        A bigger vocabulary could produce better features, but might result in slower training!
+    \end{warning}
+\end{itemize}
+\end{note}
+
+\subsubsection{Binary presence}
+Another option is to simplify bag-of-words to presence/absence of words.
+\begin{itemize}
+    \item Feature = 1 if word appears, 0 otherwise.
+    \item Ignores frequency of word within document.
+    \item Useful when word presence is more informative than counts.
+\end{itemize}
+
+\subsubsection{TF-IDF}
+The problem is that raw words counts are misleading because common words like "the" or "is" appear everywhere but add zero meaning. Truly informative words (e.g "remarkable", "special", "uninspiring") are rare and give a document its unique identity.
+We can use TF-IDF (term frequency - inverse document frequency) to scale down frequent, generic words and scale up rare, highly descriptive words to surface the most meaningful features. \\\\
+\textbf{TF (term frequency):} number of times term $t$ appears in document $d$ divided by total number of terms in document $d$. \\\\
+\textbf{IDF (inverse document frequency):}\\
+\begin{itemize}
+    \item $\text{idf}(t)=\log(N/\text{df}(t))$, where
+    \item $N$ is the number of documents in the training set, $\text{df}(t)$ id the number of documents containing term $t$.
+    \item $\text{idf}(t)$ is low if term $t$ is common and high when term $t$ is rare.
+\end{itemize}
+\textbf{TF-IDF:} $\text{tf}\times\text{idf}$
+\begin{note}[Extra]
+Usually the TF-IDF vector is L2-normalized. Reminder on L2-normalization:
+$$
+x_{ij}^{\text{new}}=\frac{x_{ij}}{\sqrt{\sum_{i=1}x_{ij}^2}}
+$$
+\end{note}
+
+\subsubsection{Example 1}
+Suppose we have 100 documents of 200 words each. The term "the" appears 20 times in document $d$ and in 90 documents overall.
+\begin{itemize}
+    \item $\text{tf}(\text{"the"},d)=20/200=0.1$
+    \item $\text{idf}(\text{"the"})=\log(100/90)=0.046$
+    \item $\text{tf-idf}(\text{"the"},d)=0.1\times 0.046=0.0046$
+\end{itemize}
+
+\subsubsection{Example 2}
+Suppose we have 100 documents of 200 words each. The term "happy" appears 5 times in document $d$ and in 5 documents overall.
+\begin{itemize}
+    \item $\text{tf}(\text{"happy"},d)=5/200=0.025$
+    \item $\text{idf}(\text{"happy"})=\log(100/5)\approx 3$
+    \item $\text{tf-idf}(\text{"happy"},d)=0.025\times 3=0.075$
+\end{itemize}
+
+\subsection{Regularization}
+\subsubsection{Interpreting logistic regression}
+After training, learned weights capture how each feature contributes to model predictions, giving us insight into what the model has learned.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/R_1.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+The magnitude of a weight $|w_i|$ reflects how strongly the associated feature influences the final predictions. Larger values have a stronger effect. The sign of $w_i$ shows the direction of influence. Positive weights push the prediction towards class 1, while negative weights push the prediction towards class 0.
+\subsubsection{Overfitting}
+\begin{definition}[Overfitting]
+Overfitting is when your model is fitting the details of the training data so closely that the model doesn't generalize well to the test set. 
+This happens when the model is over-parameterized. In other words, it has more parameters than required to model the data.
+The model is "too powerful", so it memorizes the training data. It predicts training data perfectly, but cannot generalize to new data.
+\end{definition}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/R_2.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+How can overfitting happen for logistic regression?
+\begin{itemize}
+    \item The weight $w_i$ is learned such that $w_ix_i$ contributes to improved accuracy.
+    \item If a feature $x_i$ occurs only in one class in the training data, the model could learn very high weight $w_i$ and perfectly predict $y$.
+    \item The model might be over-relying on the presence of this feature, due to a peculiar property of the training data.
+    \item The model will fail to generalize to a test set without this feature.
+\end{itemize}
+\begin{note}[Tracking performance]
+\textbf{High training accuracy, but low validation accuracy OR low training loss, but high validation loss.}
+\begin{itemize}
+    \item That's why it's important to track validation perfroamcne during training!
+    \item If you only track training performance, this tells you nothing about how your model will generalize.
+\end{itemize}
+\end{note}
+Potential causes of overfitting:
+\begin{itemize}
+    \item \textbf{Wrong model for task:} model complexity exceeds available data.
+    \item \textbf{Training data too small:} model will memorize rather than generalize.
+    \item \textbf{Low-quality training data:} too much noise, which the model learns as if it is signal noise.
+    \item \textbf{Too many training epochs:} eventually model fits training set too closely.
+\end{itemize}
+
+\subsubsection{Early stopping}
+\begin{definition}[Early stopping]
+Stop training when the performance on held-out dataset stops improving to avoid overfitting.
+\end{definition}
+$\quad$\\[-1em]
+Validation performance usually improve before degrading with overfitting. After this, improving training data fit comes at expense of generalization. Continually monitor performance on validation dataset and stop training where validation accuracy peaks.
+
+\subsubsection{Regularization}
+Add a regularization term $R(\theta)$ to the objective function.
+$$
+\hat{\theta}=\underset{\theta}{\text{argmax}}\Big[\sum_{i=1}^{B}\log P(y_i|\mathbf{x}_i;\theta)-\alpha R(\theta)\Big]
+$$
+Choose $R(\theta)$ to penelize large parameters $\theta$. Loss favors predicting data less well with small $\theta$ than predicting data well with big $\theta$. More formally, we force optimization to balance maximizing the log-likelihood while minimizing weight magnitudes.
+
+\subsubsection{L2 Regularization}
+The regularization term is the sum of the squares of the weights. The L2 norm $||\theta||_2$ is the Euclidean distance of $\theta$ to the origin.
+$$
+R(\theta)=||\theta||_2^2=\sum_{i=1}^{n}\theta_{i}^2
+$$
+The L2 regularized log-likelihood:
+$$
+\hat{\theta}=\underset{\theta}{\text{argmax}}\Big[\sum_{i=1}^{B}\log P(y_i|\mathbf{x}_i;\theta)-\alpha\sum_{i=1}^{n}\theta_{n}^2\Big]
+$$
+This is equivalent to minimizing the cross-entropy loss plus the L2 norm.
+$$
+\hat{\theta}=\underset{\theta}{\text{argmax}}\Big[\frac{1}{B}\sum_{i=1}^{B}L_{\text{CE}}(\hat{y}_i,y_i)+\alpha\sum_{i=1}^n\theta_{n}^2\Big]
+$$
+
+\subsubsection{L1 Regularization}
+The regularization term is the sum of the absolute values of the weights. The L1 norm $||\theta||$ is the Euclidean distance of $\theta$ to the origin.
+$$
+R(\theta)=||\theta||_1=\sum_{i=1}^{n}|\theta_{i}|
+$$
+The L1 regularized log-likelihood:
+$$
+\hat{\theta}=\underset{\theta}{\text{argmax}}\Big[\sum_{i=1}^{B}\log P(y_i|\mathbf{x}_i;\theta)-\alpha\sum_{i=1}^{n}|\theta_{n}|\Big]
+$$
+This is equivalent to minimizing the cross-entropy loss plus the L1 norm.
+$$
+\hat{\theta}=\underset{\theta}{\text{argmax}}\Big[\frac{1}{B}\sum_{i=1}^{B}L_{\text{CE}}(\hat{y}_i,y_i)+\alpha\sum_{i=1}^n|\theta_{n}|\Big]
+$$
+
+\subsubsection{Regularization (continued)}
+L2 regularization produces weight vectors with many small weights:
+$$
+[0.05,-0.01,0.01,-0.005,0.1,\dots]
+$$
+L1 regularization tends to produce sparse solutions with some larger weights but many more weights set to zero.
+$$
+[1.1,0.0,-2.5,0.0,0.0,\dots]
+$$
+$$
+\hat{\theta}=\underset{\theta}{\text{argmax}}\Big[\sum_{i=1}^{B}\log P(y_i|\mathbf{x}_i;\theta)-\alpha R(\theta)\Big]
+$$
+\begin{itemize}
+    \item $\alpha$ is a hyperparameter that controls the strength of regularization.
+    \item During training, the model is baised towards smaller parameter values, which prevent over-reliance on certain features.
+    \item These features could be unique to the training data, so not relying on them can reduce overfitting.
+\end{itemize}
 \end{document}

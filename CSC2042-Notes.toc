@@ -25,3 +25,22 @@
 \contentsline {subsubsection}{\numberline {1.7.1}Batching}{11}{subsubsection.1.7.1}%
 \contentsline {subsubsection}{\numberline {1.7.2}Example}{12}{subsubsection.1.7.2}%
 \contentsline {subsubsection}{\numberline {1.7.3}Vectorization}{12}{subsubsection.1.7.3}%
+\contentsline {subsection}{\numberline {1.8}Multinomial logistic regression}{13}{subsection.1.8}%
+\contentsline {subsubsection}{\numberline {1.8.1}One-vs-rest classification}{13}{subsubsection.1.8.1}%
+\contentsline {subsubsection}{\numberline {1.8.2}Multinomial logistic regression}{14}{subsubsection.1.8.2}%
+\contentsline {subsubsection}{\numberline {1.8.3}Imbalanced classes}{15}{subsubsection.1.8.3}%
+\contentsline {subsubsection}{\numberline {1.8.4}Handling imbalanced datasets}{16}{subsubsection.1.8.4}%
+\contentsline {subsection}{\numberline {1.9}Text classification}{16}{subsection.1.9}%
+\contentsline {subsubsection}{\numberline {1.9.1}Bag-of-words}{16}{subsubsection.1.9.1}%
+\contentsline {subsubsection}{\numberline {1.9.2}Binary presence}{18}{subsubsection.1.9.2}%
+\contentsline {subsubsection}{\numberline {1.9.3}TF-IDF}{18}{subsubsection.1.9.3}%
+\contentsline {subsubsection}{\numberline {1.9.4}Example 1}{18}{subsubsection.1.9.4}%
+\contentsline {subsubsection}{\numberline {1.9.5}Example 2}{19}{subsubsection.1.9.5}%
+\contentsline {subsection}{\numberline {1.10}Regularization}{19}{subsection.1.10}%
+\contentsline {subsubsection}{\numberline {1.10.1}Interpreting logistic regression}{19}{subsubsection.1.10.1}%
+\contentsline {subsubsection}{\numberline {1.10.2}Overfitting}{19}{subsubsection.1.10.2}%
+\contentsline {subsubsection}{\numberline {1.10.3}Early stopping}{20}{subsubsection.1.10.3}%
+\contentsline {subsubsection}{\numberline {1.10.4}Regularization}{21}{subsubsection.1.10.4}%
+\contentsline {subsubsection}{\numberline {1.10.5}L2 Regularization}{21}{subsubsection.1.10.5}%
+\contentsline {subsubsection}{\numberline {1.10.6}L1 Regularization}{21}{subsubsection.1.10.6}%
+\contentsline {subsubsection}{\numberline {1.10.7}Regularization (continued)}{22}{subsubsection.1.10.7}%

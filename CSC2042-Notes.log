@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.6.1)  16 SEP 2026 22:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.6.1)  17 SEP 2026 08:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -573,24 +573,24 @@ File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 ) (./CSC2042-Notes.aux)
 \openout1 = `CSC2042-Notes.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
  (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count354
@@ -650,7 +650,7 @@ Package: inputenc 2024/02/08 v1.3d Input encoding file
 \inpenc@prehook=\toks44
 \inpenc@posthook=\toks45
 )
-Package hyperref Info: Link coloring ON on input line 39.
+Package hyperref Info: Link coloring ON on input line 40.
  (./CSC2042-Notes.out) (./CSC2042-Notes.out)
 \@outlinefile=\write4
 \openout4 = `CSC2042-Notes.out'.
@@ -658,10 +658,10 @@ Package hyperref Info: Link coloring ON on input line 39.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
-<UCT-logo.png, id=151, 356.532pt x 362.3136pt>
+<UCT-logo.png, id=228, 356.532pt x 362.3136pt>
 File: UCT-logo.png Graphic file (type png)
 <use UCT-logo.png>
-Package pdftex.def Info: UCT-logo.png  used on input line 45.
+Package pdftex.def Info: UCT-logo.png  used on input line 46.
 (pdftex.def)             Requested size: 187.89914pt x 190.95277pt.
  [1
 
@@ -673,62 +673,146 @@ Package pdftex.def Info: UCT-logo.png  used on input line 45.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.62 \newpage
+l.63 \newpage
               [1]
-<Pictures/SLR_1.png, id=195, 812.03375pt x 296.10625pt>
+<Pictures/SLR_1.png, id=290, 812.03375pt x 296.10625pt>
 File: Pictures/SLR_1.png Graphic file (type png)
 <use Pictures/SLR_1.png>
-Package pdftex.def Info: Pictures/SLR_1.png  used on input line 111.
+Package pdftex.def Info: Pictures/SLR_1.png  used on input line 112.
 (pdftex.def)             Requested size: 375.80544pt x 137.03284pt.
  [2{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-<Pictures/SLR_2.png, id=207, 702.625pt x 486.81876pt>
+<Pictures/SLR_2.png, id=302, 702.625pt x 486.81876pt>
 File: Pictures/SLR_2.png Graphic file (type png)
 <use Pictures/SLR_2.png>
-Package pdftex.def Info: Pictures/SLR_2.png  used on input line 122.
+Package pdftex.def Info: Pictures/SLR_2.png  used on input line 123.
 (pdftex.def)             Requested size: 234.8775pt x 162.73802pt.
  [3 <./Pictures/SLR_1.png (PNG copy)> <./Pictures/SLR_2.png (PNG copy)>] [4]
-<Pictures/LR_1.png, id=222, 708.6475pt x 534.99875pt>
+<Pictures/LR_1.png, id=317, 708.6475pt x 534.99875pt>
 File: Pictures/LR_1.png Graphic file (type png)
 <use Pictures/LR_1.png>
-Package pdftex.def Info: Pictures/LR_1.png  used on input line 200.
+Package pdftex.def Info: Pictures/LR_1.png  used on input line 201.
 (pdftex.def)             Requested size: 234.8775pt x 177.31749pt.
  [5] [6 <./Pictures/LR_1.png (PNG copy)>] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 293--295
+Underfull \hbox (badness 10000) in paragraph at lines 294--296
 
  []
 
 [8]
-<Pictures/GD_1.png, id=241, 709.65125pt x 362.35374pt>
+<Pictures/GD_1.png, id=337, 709.65125pt x 362.35374pt>
 File: Pictures/GD_1.png Graphic file (type png)
 <use Pictures/GD_1.png>
-Package pdftex.def Info: Pictures/GD_1.png  used on input line 342.
+Package pdftex.def Info: Pictures/GD_1.png  used on input line 343.
 (pdftex.def)             Requested size: 469.75502pt x 239.86746pt.
  [9] [10 <./Pictures/GD_1.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 414--416
+Underfull \hbox (badness 10000) in paragraph at lines 415--417
 
  []
 
-[11] [12] [13] (./CSC2042-Notes.aux)
+[11] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 536--538
+
+ []
+
+[13]
+<Pictures/MNLR_1.png, id=363, 667.49374pt x 295.1025pt>
+File: Pictures/MNLR_1.png Graphic file (type png)
+<use Pictures/MNLR_1.png>
+Package pdftex.def Info: Pictures/MNLR_1.png  used on input line 571.
+(pdftex.def)             Requested size: 234.8775pt x 103.84126pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 574--577
+
+ []
+
+
+Overfull \hbox (7.85742pt too wide) detected at line 595
+\OML/cmm/m/it/10.95 f\OT1/cmr/m/n/10.95 (\OT1/cmr/bx/n/10.95 x\OT1/cmr/m/n/10.95 ; \OML/cmm/m/it/10.95 W; b\OT1/cmr/m/n/10.95 ) = [] = [] [] = [](\OML/cmm/m/it/10.95 W\OT1/cmr/bx/n/10.95 x \OT1/cmr/m/n/10.95 + \OT1/cmr/bx/n/10.95 b\OT1/cmr/m/n/10.95 )
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 611--614
+
+ []
+
+[14 <./Pictures/MNLR_1.png (PNG copy)>]
+<Pictures/IC_1.png, id=369, 515.9275pt x 569.12625pt>
+File: Pictures/IC_1.png Graphic file (type png)
+<use Pictures/IC_1.png>
+Package pdftex.def Info: Pictures/IC_1.png  used on input line 632.
+(pdftex.def)             Requested size: 140.92793pt x 155.45508pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 643--651
+
+ []
+
+[15 <./Pictures/IC_1.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 661--666
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 661--666
+
+ []
+
+<Pictures/BoW_1.png, id=375, 654.445pt x 288.07625pt>
+File: Pictures/BoW_1.png Graphic file (type png)
+<use Pictures/BoW_1.png>
+Package pdftex.def Info: Pictures/BoW_1.png  used on input line 677.
+(pdftex.def)             Requested size: 328.82707pt x 144.74547pt.
+[16]
+<Pictures/BoW_2.png, id=386, 703.62875pt x 325.215pt>
+File: Pictures/BoW_2.png Graphic file (type png)
+<use Pictures/BoW_2.png>
+Package pdftex.def Info: Pictures/BoW_2.png  used on input line 685.
+(pdftex.def)             Requested size: 328.82707pt x 151.98265pt.
+ [17 <./Pictures/BoW_1.png (PNG copy)> <./Pictures/BoW_2.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 719--723
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 719--723
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 719--723
+
+ []
+
+[18]
+<Pictures/R_1.png, id=398, 708.6475pt x 110.4125pt>
+File: Pictures/R_1.png Graphic file (type png)
+<use Pictures/R_1.png>
+Package pdftex.def Info: Pictures/R_1.png  used on input line 758.
+(pdftex.def)             Requested size: 375.80544pt x 58.55371pt.
+<Pictures/R_2.png, id=399, 717.68124pt x 366.36874pt>
+File: Pictures/R_2.png Graphic file (type png)
+<use Pictures/R_2.png>
+Package pdftex.def Info: Pictures/R_2.png  used on input line 772.
+(pdftex.def)             Requested size: 375.80544pt x 191.84892pt.
+ [19 <./Pictures/R_1.png (PNG copy)>] [20 <./Pictures/R_2.png (PNG copy)>] [21] [22] (./CSC2042-Notes.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `CSC2042-Notes.out' has not changed.
-(rerunfilecheck)             Checksum: 6DB905F3DEB4D99B69E1B4085CEF8223;4105.
+(rerunfilecheck)             Checksum: 1D146F2DDCAF6705C0E3B3F8BEF51D92;7187.
  ) 
 Here is how much of TeX's memory you used:
- 28333 strings out of 469515
- 571514 string characters out of 5470808
- 1008748 words of memory out of 5000000
- 56515 multiletter control sequences out of 15000+600000
+ 28455 strings out of 469515
+ 573862 string characters out of 5470808
+ 1008774 words of memory out of 5000000
+ 56597 multiletter control sequences out of 15000+600000
  635168 words of font info for 65 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 98i,14n,108p,514b,1018s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,14n,108p,514b,1190s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on CSC2042-Notes.pdf (14 pages, 595193 bytes).
+Output written on CSC2042-Notes.pdf (23 pages, 1063119 bytes).
 PDF statistics:
- 350 PDF objects out of 1000 (max. 8388607)
- 269 compressed objects within 3 object streams
- 49 named destinations out of 1000 (max. 500000)
- 398 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 509 PDF objects out of 1000 (max. 8388607)
+ 411 compressed objects within 5 object streams
+ 89 named destinations out of 1000 (max. 500000)
+ 580 words of extra memory for PDF output out of 10000 (max. 10000000)
 
