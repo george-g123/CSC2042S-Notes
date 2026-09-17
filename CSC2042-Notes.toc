@@ -1,46 +1,54 @@
-\contentsline {section}{\numberline {1}Supervised learning}{2}{section.1}%
-\contentsline {subsection}{\numberline {1.1}What is machine learning?}{2}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Types of machine learning}{2}{subsection.1.2}%
-\contentsline {subsubsection}{\numberline {1.2.1}Unsupervised learning}{2}{subsubsection.1.2.1}%
-\contentsline {subsection}{\numberline {1.3}Simple linear regression}{2}{subsection.1.3}%
-\contentsline {subsubsection}{\numberline {1.3.1}Loss function}{3}{subsubsection.1.3.1}%
-\contentsline {subsection}{\numberline {1.4}Logistic regression}{5}{subsection.1.4}%
-\contentsline {subsubsection}{\numberline {1.4.1}Probability basics}{5}{subsubsection.1.4.1}%
-\contentsline {subsubsection}{\numberline {1.4.2}Discriminative classifier}{5}{subsubsection.1.4.2}%
-\contentsline {subsubsection}{\numberline {1.4.3}Logistic regression}{5}{subsubsection.1.4.3}%
-\contentsline {subsubsection}{\numberline {1.4.4}Example}{7}{subsubsection.1.4.4}%
-\contentsline {subsection}{\numberline {1.5}Cross-entropy loss}{7}{subsection.1.5}%
-\contentsline {subsubsection}{\numberline {1.5.1}Log probabilities}{7}{subsubsection.1.5.1}%
-\contentsline {subsubsection}{\numberline {1.5.2}Loss function}{7}{subsubsection.1.5.2}%
-\contentsline {subsubsection}{\numberline {1.5.3}Example}{8}{subsubsection.1.5.3}%
-\contentsline {subsubsection}{\numberline {1.5.4}Objective function}{8}{subsubsection.1.5.4}%
-\contentsline {subsubsection}{\numberline {1.5.5}Optimization}{9}{subsubsection.1.5.5}%
-\contentsline {subsection}{\numberline {1.6}Gradient descent}{9}{subsection.1.6}%
-\contentsline {subsubsection}{\numberline {1.6.1}Loss function}{9}{subsubsection.1.6.1}%
-\contentsline {subsubsection}{\numberline {1.6.2}Optimization}{9}{subsubsection.1.6.2}%
-\contentsline {subsubsection}{\numberline {1.6.3}Learning rate}{10}{subsubsection.1.6.3}%
-\contentsline {subsubsection}{\numberline {1.6.4}Optimization (continued)}{11}{subsubsection.1.6.4}%
-\contentsline {subsubsection}{\numberline {1.6.5}Gradient descent formula}{11}{subsubsection.1.6.5}%
-\contentsline {subsection}{\numberline {1.7}Stochastic gradient descent}{11}{subsection.1.7}%
-\contentsline {subsubsection}{\numberline {1.7.1}Batching}{11}{subsubsection.1.7.1}%
-\contentsline {subsubsection}{\numberline {1.7.2}Example}{12}{subsubsection.1.7.2}%
-\contentsline {subsubsection}{\numberline {1.7.3}Vectorization}{12}{subsubsection.1.7.3}%
-\contentsline {subsection}{\numberline {1.8}Multinomial logistic regression}{13}{subsection.1.8}%
-\contentsline {subsubsection}{\numberline {1.8.1}One-vs-rest classification}{13}{subsubsection.1.8.1}%
-\contentsline {subsubsection}{\numberline {1.8.2}Multinomial logistic regression}{14}{subsubsection.1.8.2}%
-\contentsline {subsubsection}{\numberline {1.8.3}Imbalanced classes}{15}{subsubsection.1.8.3}%
-\contentsline {subsubsection}{\numberline {1.8.4}Handling imbalanced datasets}{16}{subsubsection.1.8.4}%
-\contentsline {subsection}{\numberline {1.9}Text classification}{16}{subsection.1.9}%
-\contentsline {subsubsection}{\numberline {1.9.1}Bag-of-words}{16}{subsubsection.1.9.1}%
-\contentsline {subsubsection}{\numberline {1.9.2}Binary presence}{18}{subsubsection.1.9.2}%
-\contentsline {subsubsection}{\numberline {1.9.3}TF-IDF}{18}{subsubsection.1.9.3}%
-\contentsline {subsubsection}{\numberline {1.9.4}Example 1}{18}{subsubsection.1.9.4}%
-\contentsline {subsubsection}{\numberline {1.9.5}Example 2}{19}{subsubsection.1.9.5}%
-\contentsline {subsection}{\numberline {1.10}Regularization}{19}{subsection.1.10}%
-\contentsline {subsubsection}{\numberline {1.10.1}Interpreting logistic regression}{19}{subsubsection.1.10.1}%
-\contentsline {subsubsection}{\numberline {1.10.2}Overfitting}{19}{subsubsection.1.10.2}%
-\contentsline {subsubsection}{\numberline {1.10.3}Early stopping}{20}{subsubsection.1.10.3}%
-\contentsline {subsubsection}{\numberline {1.10.4}Regularization}{21}{subsubsection.1.10.4}%
-\contentsline {subsubsection}{\numberline {1.10.5}L2 Regularization}{21}{subsubsection.1.10.5}%
-\contentsline {subsubsection}{\numberline {1.10.6}L1 Regularization}{21}{subsubsection.1.10.6}%
-\contentsline {subsubsection}{\numberline {1.10.7}Regularization (continued)}{22}{subsubsection.1.10.7}%
+\contentsline {section}{\numberline {1}Supervised learning}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}What is machine learning?}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Types of machine learning}{3}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Unsupervised learning}{3}{subsubsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.3}Simple linear regression}{3}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}Loss function}{4}{subsubsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.4}Logistic regression}{6}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}Probability basics}{6}{subsubsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {1.4.2}Discriminative classifier}{6}{subsubsection.1.4.2}%
+\contentsline {subsubsection}{\numberline {1.4.3}Logistic regression}{6}{subsubsection.1.4.3}%
+\contentsline {subsubsection}{\numberline {1.4.4}Example}{8}{subsubsection.1.4.4}%
+\contentsline {subsection}{\numberline {1.5}Cross-entropy loss}{8}{subsection.1.5}%
+\contentsline {subsubsection}{\numberline {1.5.1}Log probabilities}{8}{subsubsection.1.5.1}%
+\contentsline {subsubsection}{\numberline {1.5.2}Loss function}{8}{subsubsection.1.5.2}%
+\contentsline {subsubsection}{\numberline {1.5.3}Example}{9}{subsubsection.1.5.3}%
+\contentsline {subsubsection}{\numberline {1.5.4}Objective function}{9}{subsubsection.1.5.4}%
+\contentsline {subsubsection}{\numberline {1.5.5}Optimization}{10}{subsubsection.1.5.5}%
+\contentsline {subsection}{\numberline {1.6}Gradient descent}{10}{subsection.1.6}%
+\contentsline {subsubsection}{\numberline {1.6.1}Loss function}{10}{subsubsection.1.6.1}%
+\contentsline {subsubsection}{\numberline {1.6.2}Optimization}{10}{subsubsection.1.6.2}%
+\contentsline {subsubsection}{\numberline {1.6.3}Learning rate}{11}{subsubsection.1.6.3}%
+\contentsline {subsubsection}{\numberline {1.6.4}Optimization (continued)}{12}{subsubsection.1.6.4}%
+\contentsline {subsubsection}{\numberline {1.6.5}Gradient descent formula}{12}{subsubsection.1.6.5}%
+\contentsline {subsection}{\numberline {1.7}Stochastic gradient descent}{12}{subsection.1.7}%
+\contentsline {subsubsection}{\numberline {1.7.1}Batching}{12}{subsubsection.1.7.1}%
+\contentsline {subsubsection}{\numberline {1.7.2}Example}{13}{subsubsection.1.7.2}%
+\contentsline {subsubsection}{\numberline {1.7.3}Vectorization}{13}{subsubsection.1.7.3}%
+\contentsline {subsection}{\numberline {1.8}Multinomial logistic regression}{14}{subsection.1.8}%
+\contentsline {subsubsection}{\numberline {1.8.1}One-vs-rest classification}{14}{subsubsection.1.8.1}%
+\contentsline {subsubsection}{\numberline {1.8.2}Multinomial logistic regression}{15}{subsubsection.1.8.2}%
+\contentsline {subsubsection}{\numberline {1.8.3}Imbalanced classes}{16}{subsubsection.1.8.3}%
+\contentsline {subsubsection}{\numberline {1.8.4}Handling imbalanced datasets}{17}{subsubsection.1.8.4}%
+\contentsline {subsection}{\numberline {1.9}Text classification}{17}{subsection.1.9}%
+\contentsline {subsubsection}{\numberline {1.9.1}Bag-of-words}{17}{subsubsection.1.9.1}%
+\contentsline {subsubsection}{\numberline {1.9.2}Binary presence}{19}{subsubsection.1.9.2}%
+\contentsline {subsubsection}{\numberline {1.9.3}TF-IDF}{19}{subsubsection.1.9.3}%
+\contentsline {subsubsection}{\numberline {1.9.4}Example 1}{19}{subsubsection.1.9.4}%
+\contentsline {subsubsection}{\numberline {1.9.5}Example 2}{20}{subsubsection.1.9.5}%
+\contentsline {subsection}{\numberline {1.10}Regularization}{20}{subsection.1.10}%
+\contentsline {subsubsection}{\numberline {1.10.1}Interpreting logistic regression}{20}{subsubsection.1.10.1}%
+\contentsline {subsubsection}{\numberline {1.10.2}Overfitting}{20}{subsubsection.1.10.2}%
+\contentsline {subsubsection}{\numberline {1.10.3}Early stopping}{21}{subsubsection.1.10.3}%
+\contentsline {subsubsection}{\numberline {1.10.4}Regularization}{22}{subsubsection.1.10.4}%
+\contentsline {subsubsection}{\numberline {1.10.5}L2 Regularization}{22}{subsubsection.1.10.5}%
+\contentsline {subsubsection}{\numberline {1.10.6}L1 Regularization}{22}{subsubsection.1.10.6}%
+\contentsline {subsubsection}{\numberline {1.10.7}Regularization (continued)}{23}{subsubsection.1.10.7}%
+\contentsline {subsection}{\numberline {1.11}Naive Bayes}{23}{subsection.1.11}%
+\contentsline {subsubsection}{\numberline {1.11.1}Generative vs. discriminative classifiers}{23}{subsubsection.1.11.1}%
+\contentsline {subsubsection}{\numberline {1.11.2}Independence}{24}{subsubsection.1.11.2}%
+\contentsline {subsubsection}{\numberline {1.11.3}Bayes' rule}{24}{subsubsection.1.11.3}%
+\contentsline {subsubsection}{\numberline {1.11.4}Naive Bayes classifier}{24}{subsubsection.1.11.4}%
+\contentsline {subsubsection}{\numberline {1.11.5}Naive Bayes classifier: learning}{25}{subsubsection.1.11.5}%
+\contentsline {subsubsection}{\numberline {1.11.6}Example}{26}{subsubsection.1.11.6}%
+\contentsline {subsubsection}{\numberline {1.11.7}Binary Naive Bayes}{27}{subsubsection.1.11.7}%

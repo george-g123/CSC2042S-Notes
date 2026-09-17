@@ -854,4 +854,171 @@ $$
     \item During training, the model is baised towards smaller parameter values, which prevent over-reliance on certain features.
     \item These features could be unique to the training data, so not relying on them can reduce overfitting.
 \end{itemize}
+
+\subsection{Naive Bayes}
+\subsubsection{Generative vs. discriminative classifiers}
+\textbf{Generative models} learn the distribution of individual classes $P(x|y)$.
+Model how data is generated. Given a new example to classify, based on generation assumption, which category is most likely to generate this data?
+\\\\
+\textbf{Discriminative models} learn the boundaries between classes $P(y|x)$. Model decision boundary between classes rather than underlying distribution of each class. Learns defining differences between classes and classifies examples based on these differences.
+\\\\
+\textbf{Discriminative classifier:} estimate the posterior $P(y|x)$ directly. This is what logistic regression computes.
+$$
+y=\underset{y\in C}{\text{argmax}}\hspace{2pt}\overbrace{P(y|x)}^{\text{posterior}}
+$$
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/NB_1.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+\textbf{Generative classifier:} estimate likelihood $P(x|y)$ and apply Bayes' rule.
+$$
+y=\underset{y\in C}{\text{argmax}}\overbrace{P(x|y)}^{\text{likelihood}}\overbrace{P(y)}^{\text{prior}}
+$$
+
+\subsubsection{Independence}
+\begin{definition}[Independence of events]
+Two events $X$ and $Y$ are independent when knowing one tells you nothing about the other. In other words, learning $Y$ does not change the probability of $X$.
+\end{definition}
+$\quad$\\[-1em]
+That is,
+$$
+P(X|Y)=P(X)\iff P(Y|X)=P(Y)
+$$
+If two events are independent, then te following holds:
+$$
+P(X,Y)=P(X)P(Y)
+$$
+
+\subsubsection{Bayes' rule}
+Two ways to factor a join distribution over two variables:
+$$
+P(x,y)=\frac{P(y)P(x|y)}{P(x)}
+$$
+Dividing, we get Bayes' rule:
+$$
+\boxed{P(y|x)=\frac{P(y)P(x|y)}{P(x)}}
+$$
+where:
+\begin{itemize}
+    \item $P(y|x)$ is the \textbf{posterior probability}.
+    \item $P(y)$ is the \textbf{prior}.
+    \item $P(x)$ is the \textbf{evidence}.
+    \item $P(x|y)$ is the \textbf{likelihood}.
+\end{itemize}
+
+\subsubsection{Naive Bayes classifier}
+Naive Bayes is a simple classification method based on Bayes' rule. For a document $d$, Bayes' rule can be used to calculate $P(c|d)$ for every output class $C=\{c_1,c_2,\dots,c_K\}$.
+$$
+P(c|d)=\frac{P(c)P(d|c)}{P(d)}
+$$
+To obtain a prediction, find the class for which $P(c|d)$ is highest:
+$$
+c_{\text{MAP}}=\underset{c\in C}{\text{argmax}}\hspace{2pt}P(c|d)
+$$
+MAP stand for "maximum a posteriori", or in other words most likely class.
+\begin{note_special}[Derivation]
+\begin{align*}
+    c_{\text{MAP}}&=\underset{c\in C}{\text{argmax}}\hspace{2pt}P(c|d) \\
+    &= \underset{c\in C}{\text{argmax}}\hspace{2pt}\frac{P(c)P(d|c)}{P(d)}\quad\text{(Bayes' rule)} \\
+    &=\underset{c\in C}{\text{argmax}}\hspace{2pt}P(d|c)P(c)\quad\text{(Drop denominator, argmax unaffected)} \\
+    &=\underset{c\in C}{\text{argmax}}\hspace{2pt}P(x_1,x_2,\dots,x_n|c)P(c)\quad\text{(Represent document as features)}
+\end{align*}
+\end{note_special}
+$\quad$\\[-1em]
+How can we estimate these probabilities? The simple solution is to just count how often each class occurs and then normalize. 
+\\\\
+\textbf{Bag-of-words assumption:} Assume word positions doesn't matter. \\\\
+\textbf{Conditional independence:} Assume the feature probabilities $P(x_i|c_i)$ are independent given the class $c$:
+$$
+P(x_1,x_2,\dots,x_n|c)=P(x_1|c)\times P(x_2|c)\times\cdots\times P(x_n|c)
+$$
+We can estimate these probabilities:
+$$
+\hat{P}(w_i|c_j)=\frac{\text{count}(w_i,c_j)}{\sum_{w\in V}\text{count}(w,c_j)}
+$$
+In other words, the relative frequency of $w_i$ within class $c_j$. We can estimate $P(c)$ in the following way:
+$$
+\hat{P}(c_j)=\frac{N_{cj}}{N_\text{total}}
+$$
+where $N_{cj}$ is the number of training examples in class $c_j$ and $N_{\text{total}}$ is the total number of training examples. Given our assumption, we can rewrite the prediction for Naive Bayes as:
+\begin{align*}
+    c_{\text{NB}}&=\underset{c\in C}{\text{argmax}}\hspace{2pt}P(c_j)\prod_{x\in X}P(x|c) \\
+    &= \underset{c\in C}{\text{argmax}}\hspace{2pt}P(c_j)\prod_{i\in\text{positions}}P(x_i|c_j)
+\end{align*}
+where $i\in\text{positions}$ goes through all words in the document. While this is great, it comes with an implementation problem. Multiplying lots of probabilities can results in floating-point underflow. To combat this, simply use log probabilities!
+\begin{align*}
+    c_{\text{NB}}&=\underset{c\in C}{\text{argmax}}\hspace{2pt}P(c_j)\prod_{i\in\text{positions}}P(x_i|c_j) \\
+    &=\underset{c\in C}{\text{argmax}}\Big[\log P(c_j)+\sum_{i\in\text{positions}}\log P(x_i|c_j)\Big]
+\end{align*}
+
+\subsubsection{Naive Bayes classifier: learning}
+The problem with maximum likelihood is the zero counts. What is we have seen no training documents with the word "fantastic" and labelled as "positive"? If any of the probability terms are 0, the whole probability score will be 0.
+\\\\
+\textbf{Solution: Laplace (add-1) smoothing} \\
+Add 1 to the count of each $(w,c)$:
+$$
+\hat{P}(w_i|c)=\frac{\text{count}(w_i,c)+1}{\sum_{w\in V}\text{count}(w,c)+|V|}
+$$
+where $|V|$ is the size of the vocabulary. Unknown words get a tiny probability. Frequent words still dominate.
+\\\\
+\textbf{Solution: Additive smoothing}\\
+Add $\alpha$ to the count of each $(w,c)$:
+$$
+\hat{P}(w_i|c)=\frac{\text{count}(w_i,c)+\alpha}{\sum_{w\in V}\text{count}(w,c)+\alpha|V|}
+$$
+Here, $\alpha$ is the smoothing parameter. It controls how much probability mass you give to unseen events. If $\alpha=1$, that's classic Laplace smoothing.
+\\\\
+\textbf{Training algorithm:}
+\begin{enumerate}
+    \item From training corpus, extract the vocabulary.
+    \item Calculate $P(c_j)$ terms.
+    \item Calculate $P(w_k|c_j)$ terms.
+\end{enumerate}
+\begin{note}[Extra]
+What about unknown words that appear in the test data but not in the training data? It doesn't necessarily help. Knowing which class has more unkown words is not generally helpful.
+\end{note}
+
+\subsubsection{Example}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/NB_2.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+\begin{enumerate}
+    \item Create vocabulary: 20 unique words in training data.
+    \item Calculate the priors from training: $\hat{P}(c_j)=N_{cj}/N_{\text{total}}$
+$$
+P(-)=3/5\quad\quad P(+)=2/5
+$$
+    \item Calculate likelihoods from training (Laplace smoothing). Here we have 14 tokens in negative docs and 9 in positive docs.
+\begin{align*}
+    P(\text{"predictable"}|-)&=\frac{1+1}{14+20} & P(\text{"predictable"}|+)&=\frac{0+1}{9+20} \\
+    P(\text{"no"}|-)&=\frac{1+1}{14+20} & P(\text{"no"}|+)&=\frac{0+1}{9+20} \\
+    P(\text{"fun"}|-)&=\frac{0+1}{14+20} & P(\text{"fun"}|+)&=\frac{1+1}{9+20}
+\end{align*}    
+    \item Scoring the test example:
+\begin{align*}
+    P(-)P(\text{"predicatble"}|-)P(\text{"no"}|-)P(\text{"fun"}|-)&=0.6\times\frac{4}{32^2}=6.1\times 10^{-5} \\
+    P(+)P(\text{"predicatble"}|+)P(\text{"no"}|+)P(\text{"fun"}|+)&=0.4\times\frac{2}{29^2}=3.2\times 10^{-5}
+\end{align*}
+\end{enumerate}
+
+\subsubsection{Binary Naive Bayes}
+For tasks like sentiment analysis, word occurence can be more important than word frequency. For example, the occurence of the word "fantastic" tells us a lot. The fact that it occurs 5 times may not tell us much more.
+Binary Naive Bayes is a variant of Naive Bayes:
+\begin{itemize}
+    \item Clip our word counts at 1 for each document.
+    \item Can implement by removing duplicates in each document and executing Naive Bayes algorithm as before.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/NB_3.png}
+    \end{subfigure}
+\end{figure}
 \end{document}
