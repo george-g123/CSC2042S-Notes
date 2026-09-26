@@ -62,16 +62,6 @@
 \tableofcontents
 \newpage
 
-% Here is some standard text for my notes. 
-
-% \begin{definition}[Thermodynamics]
-% The branch of physics that deals with the relationships between heat and other forms of energy.
-% \end{definition}
-
-% \begin{warning}
-% Do not confuse heat with temperature! 
-% \end{warning}
-
 \section{Supervised learning}
 
 \subsection{What is machine learning?}
@@ -1021,4 +1011,91 @@ Binary Naive Bayes is a variant of Naive Bayes:
         \includegraphics[width=\linewidth]{Pictures/NB_3.png}
     \end{subfigure}
 \end{figure}
+
+\section{Artificial Neural Networks}
+\subsection{Neural networks}
+Artificial neural networks (ANNS) consist of artificial neurons, much like brain cells, and are connected to each other via synapses.
+The artificial neurons pass signals (real numbers) between each other. Given some input, we would like to make a decision.
+Typically, we use non-linear activation functions for each neuron.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_1.png}
+    \end{subfigure}
+\end{figure}
+
+\subsubsection{Neural network architecture}
+A neural network consists of:
+\begin{itemize}
+    \item An input layer
+    \item Hidden layer(s)
+    \item An output layer
+\end{itemize}
+Each unit layer computes a value based on the linear combination of values of units to that point into it.
+What happens if you add more hidden layers? Increase the \textit{depth} of the neural network.
+
+\subsection{Feedforward propagation formulation}
+\subsubsection{Activation functions}
+\begin{definition}[Activation function]
+The mathematical equation inside a neuron that determines the neuron's output.
+\end{definition}
+$\quad$\\[-1em]
+What is the role of the activation function? It is used to introduce non-linearity into the neural network.
+How do they even work? Every neuron has two stages:
+\begin{enumerate}
+    \item \textbf{Weighted sum:} The neuron receives inputs from the previous layer.
+    Each input is multiplied bt a weight. These are all summed up, and a bias term is added.
+    This results in a single number $z$.
+    \item \textbf{Activation:} This number $z$ is then passed through the activation function, say $f(z)$,
+    to produce the neuron's final output $y$. This output is then sent as an input to the neurons
+    in the next layer.
+\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_2.png}
+    \end{subfigure}
+\end{figure}
+\begin{note}[Note]
+Every layer in a neural network has its own activation function.
+\end{note}
+
+\subsubsection{Network structure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_3.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+A \textbf{feedforward network} has connections going in one direction.
+Logistic regression can be viewed as ashallow (1-layer) neural network.
+Let each connection (line) represent a weight multiplication with the preceding unit output, and
+all incoming lines represent a weighted sum. Each unit computes: $a_j=g_j(\mathbf{w}_{j}^{\top}\mathbf{x}+b_j)$
+\begin{itemize}
+    \item A weighted sum of its weights with the output of the previous layer.
+    \item Passes that through an activation function $g$.
+\end{itemize}
+
+\subsubsection{Non-linearity}
+Each unit $j$ has a \textbf{nonlinear} activation function $g_j$ through which the weighted sum is passed.
+Without nonlinearity, any composition of units would still represent a linear function.
+The nonlinearity allows sufficiently large networks of units to approximate arbitrary functions.
+Unlike linear regression, perceptrons, and logistic regression neural networks can model non-linear functions for regression or classification.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_4.png}
+    \end{subfigure}
+\end{figure}
+\begin{note_special}[Theorem: Universal approximation theorem]
+A network with just 2 layers, the first non-linear and the second linear, can approximate any continuous function to arbitrary degree of accuracy, including non-linear function.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_5.png}
+    \end{subfigure}
+\end{figure}
+\end{note_special}
 \end{document}
