@@ -1098,4 +1098,289 @@ A network with just 2 layers, the first non-linear and the second linear, can ap
     \end{subfigure}
 \end{figure}
 \end{note_special}
+
+\subsection{Activation functions}
+All of the following are monotonically non-decreasing (positive gradients).
+The choice of activation function is a modelling decision.
+It depends on factors like the task, the type of neural network, etc.
+\subsubsection{Sigmoid}
+\begin{minipage}{0.5\textwidth}
+$$
+\sigma(x)=\frac{1}{1+e^{-x}}
+$$
+As seen with logistic regression.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_6.png}
+    \end{subfigure}
+\end{figure} 
+\end{minipage}
+
+\subsubsection{ReLU}
+\begin{minipage}{0.5\textwidth}
+$$
+\text{ReLU}(x)=\max(0,x)
+$$
+Non-linear function (gradient is not constant) but acts linear for part of the domain ($>$0).
+This is a very commonly used activation function.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_7.png}
+    \end{subfigure}
+\end{figure} 
+\end{minipage}
+
+\subsubsection{Softplus}
+\begin{minipage}{0.5\textwidth}
+$$
+\text{softplus}(x)=\log(1+e^{x})
+$$
+The smooth version of ReLU function.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_8.png}
+    \end{subfigure}
+\end{figure} 
+\end{minipage}
+
+\subsubsection{Tanh}
+\begin{minipage}{0.5\textwidth}
+$$
+\tanh(x)=\frac{e^{2x}-1}{e^{2x}+1}
+$$
+Range of $\tanh$ is $[-1,1]$. It is the scaled and shifted version of the sigmoid,
+$$
+\tanh(x)=2\sigma(2x)-1
+$$
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_9.png}
+    \end{subfigure}
+\end{figure} 
+\end{minipage}
+
+\subsection{Deep neural networks}
+\begin{definition}[Deep neural networks]
+A deep neural network has
+\begin{itemize}
+    \item An input layer: input vector $x$.
+    \item Hidden layer(s): itermediate representations.
+    \item An output layer: predicting output values for $y$ e.g. probabilities.
+\end{itemize}
+\end{definition}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_10.png}
+    \end{subfigure}
+\end{figure} 
+In a \textbf{fully connected} network, every node in each layer is connected to every node in the next layer.
+A unit calculates the weighted sum of the inputs from predecessor nodes and plies some activation function to it.
+Let $a_j$ denote the output of unit $j$, let $w_{i,j}$ be the weight attaching unit $i$ to unit $j$.
+Let $b_j$ be the bias and $g_j$ the activation function of unit $j$. Then
+\begin{align*}
+    a_j&=g_j\Big(\sum_i w_{i,j}a_i+b_j\Big) \\
+    &=g_j(\mathbf{w}_j^{\top}\mathbf{x}+b_j)
+\end{align*}
+where $\mathbf{w}_j$ is the vector of weights into unit $j$ and $\mathbf{x}$ is the vector of inputs for unit $i$.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_11.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+This describes the operation of a single unit in vector form.
+We can describe entire layers and networks in matrix form. 
+
+\subsubsection{Matrix notation}
+\begin{minipage}{0.5\textwidth}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_12.png}
+    \end{subfigure}
+\end{figure} 
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+Each unit a weight vector $\mathbf{w}_i$ and a bias term $b_i$. Combine the weight vectors into a matrix $W$,
+and the biases into a vector $\mathbf{b}$:
+$$
+W=\begin{bmatrix}
+\leftarrow w_1^{\top} \rightarrow \\
+\leftarrow w_2^{\top} \rightarrow \\
+\leftarrow w_3^{\top} \rightarrow
+\end{bmatrix}
+\quad
+\mathbf{b}=\begin{bmatrix}
+b_1 \\
+b_2 \\
+b_3
+\end{bmatrix}
+$$
+$W^{(i)}$ is the weight matrix of the $i$-th layer, each row corresponding to the weight vector of a unit.
+$\mathbf{b}^{(i)}$ is the vector of biases of the $i$-th layer.
+Then $\mathbf{a}=g(W\mathbf{x}+\mathbf{b})$.
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_13.png}
+    \end{subfigure}
+\end{figure} 
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{align*}
+\hat{y}&=g_5(\text{in}_5)=g_5(w_{0,5}+w_{3,5}a_3+w_{4,5}a_4) \\
+&=g_5(w_{0,5}+w_{3,5}g_3(\text{in}_3)+w_{4,5}g_4(\text{in}_4)) \\
+&=g_5(w_{0,5}+w_{3,5}g_3(w_{0,3}+w_{1,3}x_1+w_{2,3}x_2) \\
+&+w_{4,5}g_4(w_{0,4}+w_{1,4}x_1+w_{2,4}x_2))
+\end{align*}
+\end{minipage}
+Here, 
+\begin{itemize}
+    \item $W^{(1)}$ is the weights of the first layer ($w_{1,3}$, $w_{1,4}$, etc)
+    \item $W^{(2)}$ is the weights of the second layer ($w_{3,5}$, etc)
+    \item $g^{(1)}$ and $g^{(2)}$ are the activation functions in the first and second layer, respectively.
+\end{itemize}
+Then the entire network can be written as 
+$$
+h_{W}(\mathbf{x})=g^{(2)}\big(W^{(2)}g^{(1)}(W^{(1)}\mathbf{x})\big)
+$$
+If we include the biases as well
+$$
+\boxed{h_{W,\mathbf{b}}(\mathbf{x})=g^{(2)}\big(W^{(2)}g^{(1)}(W^{(1)}\mathbf{x}+\mathbf{b}^{(1)})+\mathbf{b}^{(2)}\big)}
+$$
+
+\subsection{Cost function}
+Also known as the loss function. The initialization of weight and bias values are initially random.
+The purpose of the loss function is to grade the performance of the neural network. High loss signifies large error and poor performance.
+A low loss indicates that the network's predictions are close to the actual values.
+
+\subsection{Optimization}
+Let the loss function be parameterized by parameters $\theta=(W^{(i)},\mathbf{b}^{(i)})$ for $i=1,\dots,L$ where $L$ is the number of layers.
+Let's represent our prediction $\hat{y}$ as $f(\mathbf{x};\theta)$. 
+We want to find weights that minimize the loss, averaged over all examples in our training set $\{(\mathbf{x}_1,y_1),(\mathbf{x}_2,y_2),\dots,(\mathbf{x}_m,y_m)\}$
+$$
+\hat{\theta}=\underset{\theta}{\text{argmax}}\hspace{2px}\frac{1}{m}\sum_{i=1}^{m}L_{\text{CE}}(f(\mathbf{x}^{(i)};\theta),y^{(i)})
+$$
+There is no closed form solution, so we have to use general purpose techniques for mathemetical optimization.
+For neural networks:
+\begin{itemize}
+    \item The loss function is non-convex (has more than one minimum).
+    \item Gradient descent from any point is guaranteed to find a local minimum, but not necessarily the global minimum.
+    \item Gradient descent still works in practice. It finds a minima that leads to good performance.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/ANN_14.png}
+    \end{subfigure}
+\end{figure} 
+$\quad$\\[-1em]
+For $n$-dimensional gradients:
+\begin{itemize}
+    \item The gradient of a function of many variables is a vector pointing in the direction of the greatest increase in a function.
+    \item To determine the step size, the value of the gradient is weighted by a learning rate $\eta$.
+\end{itemize}
+$$
+w^{t+1}=w^t-\eta\frac{d}{dw}L(f(x;w),y)
+$$
+The final equation for updating parameters $\theta$ based on the gradient is
+$$
+\theta^{t+1}=\theta^{t}-\eta\nabla_{\theta}L(f(\mathbf{x};\theta),y)
+$$
+
+\subsection{Back-propagation}
+\subsubsection{A quick review of the chain rule}
+The chain rule tells us how to differentiate composite functions. A function is composite if you can write it as $f(g(x))$.
+In other words, it is a function of a function. The chain rule allows us to write the derivative of the composite function in terms of the derivatives of $g(x)$ and $f(x)$.
+$$
+\boxed{\frac{d}{dx}\big[f(g(x))\big]=f'(g(x))\cdot g'(x)}
+$$
+We can also write it in Leibniz's notation:
+$$
+f(x)=u(v(x)) \to \frac{df}{dx}=\frac{du}{dx}\cdot \frac{dv}{dx}
+$$
+$$
+f(u(v(w(x)))) \to \frac{df}{dx}=\frac{du}{dx}\cdot\frac{dv}{dx}\cdot\frac{dw}{dx}
+$$
+
+\subsubsection{What is back-propagation?}
+We have looked at forward-propagation. Now we move to back-propagation.
+Back-propagation allows a neural network to learn from its mistakes. Its main job is to efficiently calculate how much every signle weight and bias in the network contributed to the final error.
+A clever and efficient way to solve this problem is to use the chain rule from calculus.
+A neural network is a series of composite functions. Apply the chain rule to find the derivative of the loss with respect to a specific parameter (e.g the $i$-th weight of the $j$-th unit in the $k$-th layer).
+$$
+\frac{\partial L}{\partial w_i}=\frac{\partial L}{\partial y}\cdot\frac{\partial y}{\partial z}\cdot\frac{\partial z}{\partial w_i}
+$$
+
+\begin{note_special}[Derivation of back-propagation]
+\textbf{The cost function:}
+$$
+J(\hat{y}^{(i)},y^{(i)})=\frac{1}{m}\sum_{i=1}^{m}\mathcal{L}(\hat{y}^{(i)},y^{(i)})
+$$
+\textbf{The loss function:}
+$$
+\mathcal{L}^{(i)}(\hat{y}^{(i)},y^{(i)})=-\Big[y^{(i)}\log(\hat{y}^{(i)})+(1-y^{(i)}\log(1-\hat{y}^{(i)}))\Big]
+$$
+\textbf{The update rule:}
+\begin{align*}
+w^{[L]}&\leftarrow w^{[L]}-\alpha\frac{\partial J}{\partial w^{[L]}} \\
+b^{[L]}&\leftarrow b^{[L]}-\alpha\frac{\partial J}{\partial b^{[L]}}
+\end{align*}
+Recall the following derivative rules:
+\begin{itemize}
+    \item $f(x)=\log(x)$, then $f'(x)=\frac{1}{x}$.
+    \item $f(x)=\sigma(x)$, then $f'(x)=f(x)(1-f(x))$.  
+\end{itemize}
+\textbf{The derivation:}
+\begin{equation*}
+    \resizebox{1.02\textwidth}{!}{%
+        $\begin{aligned}
+            \frac{\partial\mathcal{L}^{(i)}}{\partial w^{[n]}}&=-\Big[y^{(i)}\frac{\partial}{\partial w^{[n]}}\big[\log(\hat{y}^{(i)})\big]+(1-y^{(i)})\frac{\partial}{\partial w^{[n]}}\big[\log(1-\hat{y}^{(i)})\big]\Big] \\
+            &=-\Big[y^{(i)}\frac{\partial}{\partial w^{n}}\big[\log(\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]}))\big]+(1-y^{(i)})\frac{\partial}{\partial w^{[n]}}\big[\log(1-\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]}))\big]\Big] \\
+            &=-\Big[y^{(i)}\frac{1}{a^{[n]}}\frac{\partial}{\partial w^{n}}\big[\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]})\big]+(1-y^{(i)})\frac{1}{1-a^{[n]}}\frac{\partial}{\partial w^{[n]}}\big[1-\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]})\big]\Big] \\
+            &=-\Big[y^{(i)}\frac{1}{a^{[n]}}a^{[n]}(1-a^{[n]})\frac{\partial}{\partial w^{n}}\big[w^{[n]^{\top}}a^{[n-1]}+b^{[n]}\big]+(1-y^{(i)})\frac{1}{1-a^{[n]}}(-a^{[n]})(1-a^{[n]})\frac{\partial}{\partial w^{[n]}}\big[1-w^{[n]^{\top}}a^{[n-1]}+b^{[n]}\big]\Big] \\
+            &=-\Big[y^{(i)}(1-a^{[n]})(a^{[n-1]})-(1-y^{(i)})a^{[n]}a^{[n-1]}\Big] \\
+            &=(a^{[n]}-y^{(i)})a^{[n-1]^{\top}}
+        \end{aligned}$%
+    }
+\end{equation*}
+Then, the update rule changes to
+$$
+w^{[n]}\leftarrow w^{[n]}-\alpha\frac{1}{m}\sum_{i=1}^{m}(a^{[n]}-y^{(i)})a^{[n-1]^{\top}}
+$$
+To progagate back one step further for $L=n-1$, we get:
+\begin{align*}
+    \frac{\partial\mathcal{L}}{\partial w^{[n-1]}}&=\frac{\partial\mathcal{L}}{\partial a^{[n]}}\cdot\frac{\partial a^{[n]}}{\partial z^{[n]}}\cdot\frac{\partial z^{[n]}}{\partial a^{[n-1]}}\cdot\frac{\partial a^{[n-1]}}{\partial z^{[n-1]}}\cdot\frac{\partial z^{[n-1]}}{\partial w^{[n-1]}} \\
+    &=(a^{[n]}-y^{(i)})w^{[n]^{\top}}a^{[n-1]}(1-a^{[n-1]})a^{[n-2]^{\top}} \\
+    &=w^{[n]^{\top}}a^{[n-1]}(1-a^{[n-1]})(a^{[n]}-y^{(i)})a^{[n-2]^{\top}}
+\end{align*}
+... and so on ...
+% \begin{align*}
+%     \resizebox{0.07\textwidth}{\height}{
+%     }
+% \end{align*}
+% \resizebox{0.8\textwidth}{!}{
+% \begin{align*}
+% \frac{\partial\mathcal{L}^{(i)}}{\partial w^{[n]}}&=-\Big[y^{(i)}\frac{\partial}{\partial w^{[n]}}\big[\log(\hat{y}^{(i)})\big]+(1-y^{(i)})\frac{\partial}{\partial w^{[n]}}\big[\log(1-\hat{y}^{(i)})\big]\Big] \\
+% &=-\Big[y^{(i)}\frac{\partial}{\partial w^{n}}\big[\log(\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]}))\big]+(1-y^{(i)})\frac{\partial}{\partial w^{[n]}}\big[1-\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]})\big]\Big] \\
+% &=-\Big[y^{(i)}\frac{1}{a^{[n]}}\frac{\partial}{\partial w^{n}}\big[\log(\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]}))\big]+(1-y^{(i)})\frac{1}{1-a^{[n]}}\frac{\partial}{\partial w^{[n]}}\big[1-\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]})\big]\Big]
+% \end{align*}   
+% }
+\end{note_special}
 \end{document}
