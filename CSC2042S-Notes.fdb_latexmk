@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1790538985.38602 "/home/gogy/latex-notes/CSC2042S/CSC2042-Notes.tex" "CSC2042-Notes.pdf" "CSC2042-Notes" 1790538987.43195 0
-  "/home/gogy/latex-notes/CSC2042S/CSC2042-Notes.tex" 1790538985.14952 63391 60547ad56637864dbcbe1427a9d9b19c ""
+["pdflatex"] 1790568405.38975 "/home/gogy/latex-notes/CSC2042S/CSC2042S-Notes.tex" "CSC2042S-Notes.pdf" "CSC2042S-Notes" 1790568407.43029 0
+  "/home/gogy/latex-notes/CSC2042S/CSC2042S-Notes.tex" 1790538985.14952 63391 60547ad56637864dbcbe1427a9d9b19c ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1775415801 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1775415801 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1775415801 1536 02c06700a42be0f5a28664c7273f82e7 ""
@@ -189,10 +189,10 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1775415801 43569 fd570f2fa160877d211e859f687312ba ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1780285490 5385779 47c0c393a77fd4a098bacfd57d66b88a ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1780285402 2328184 7e0e41da5ebc5ea0d312feff25c751fe ""
-  "CSC2042-Notes.aux" 1790538987.34692 9862 b51acd6c499d83cc506cf0bf9ad6f731 "pdflatex"
-  "CSC2042-Notes.out" 1790538987.34792 11451 ac139709101763477c89b4135a3a4220 "pdflatex"
-  "CSC2042-Notes.tex" 1790538985.14952 63391 60547ad56637864dbcbe1427a9d9b19c ""
-  "CSC2042-Notes.toc" 1790538987.34911 6706 fadb94f82e81e6bb0c68b1553b788975 "pdflatex"
+  "CSC2042S-Notes.aux" 1790568407.33473 9862 b51acd6c499d83cc506cf0bf9ad6f731 "pdflatex"
+  "CSC2042S-Notes.out" 1790568407.33573 11451 ac139709101763477c89b4135a3a4220 "pdflatex"
+  "CSC2042S-Notes.tex" 1790538985.14952 63391 60547ad56637864dbcbe1427a9d9b19c ""
+  "CSC2042S-Notes.toc" 1790568407.33705 6706 fadb94f82e81e6bb0c68b1553b788975 "pdflatex"
   "Pictures/ANN_1.png" 1790498389.99359 101700 2d9b5ba6a53a59c76395e28313dad7f0 ""
   "Pictures/ANN_10.png" 1790501370.94059 245451 02b26e1f21ca422864d58d6862340f4d ""
   "Pictures/ANN_11.png" 1790502483.72972 37161 e9aa95fcf4aed6606a350310f9747587 ""
@@ -222,9 +222,9 @@
   "Pictures/SLR_2.png" 1789575427.1731 53719 b36abd7ad364a79520d86b39dd322970 ""
   "UCT-logo.png" 1789572836.89823 191843 2674fe01acf62beedc48913726afce7a ""
   (generated)
-  "CSC2042-Notes.aux"
-  "CSC2042-Notes.log"
-  "CSC2042-Notes.out"
-  "CSC2042-Notes.pdf"
-  "CSC2042-Notes.toc"
+  "CSC2042S-Notes.aux"
+  "CSC2042S-Notes.log"
+  "CSC2042S-Notes.out"
+  "CSC2042S-Notes.pdf"
+  "CSC2042S-Notes.toc"
   (rewritten before read)

@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.6.1)  27 SEP 2026 21:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.6.1)  28 SEP 2026 06:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/gogy/latex-notes/CSC2042S/CSC2042-Notes.tex
-(/home/gogy/latex-notes/CSC2042S/CSC2042-Notes.tex
+**/home/gogy/latex-notes/CSC2042S/CSC2042S-Notes.tex
+(/home/gogy/latex-notes/CSC2042S/CSC2042S-Notes.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (/usr/share/texmf-dist/tex/latex/base/article.cls
@@ -570,8 +570,8 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 ) (/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count353
-) (./CSC2042-Notes.aux)
-\openout1 = `CSC2042-Notes.aux'.
+) (./CSC2042S-Notes.aux)
+\openout1 = `CSC2042S-Notes.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
 LaTeX Font Info:    ... okay on input line 40.
@@ -651,9 +651,9 @@ Package: inputenc 2024/02/08 v1.3d Input encoding file
 \inpenc@posthook=\toks45
 )
 Package hyperref Info: Link coloring ON on input line 40.
- (./CSC2042-Notes.out) (./CSC2042-Notes.out)
+ (./CSC2042S-Notes.out) (./CSC2042S-Notes.out)
 \@outlinefile=\write4
-\openout4 = `CSC2042-Notes.out'.
+\openout4 = `CSC2042S-Notes.out'.
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
@@ -665,14 +665,14 @@ Package pdftex.def Info: UCT-logo.png  used on input line 46.
 (pdftex.def)             Requested size: 187.89914pt x 190.95277pt.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./UCT-logo.png>] (./CSC2042-Notes.toc
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./UCT-logo.png>] (./CSC2042S-Notes.toc
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.48 ...ive classifiers}{23}{subsubsection.1.11.1}
                                                   % [1])
 \tf@toc=\write5
-\openout5 = `CSC2042-Notes.toc'.
+\openout5 = `CSC2042S-Notes.toc'.
 
  [2]
 <Pictures/SLR_1.png, id=430, 812.03375pt x 296.10625pt>
@@ -959,24 +959,24 @@ Overfull \hbox (8.77032pt too wide) detected at line 1362
 []
  []
 
-[35] [36] (./CSC2042-Notes.aux)
+[35] [36] (./CSC2042S-Notes.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
-Package rerunfilecheck Info: File `CSC2042-Notes.out' has not changed.
+Package rerunfilecheck Info: File `CSC2042S-Notes.out' has not changed.
 (rerunfilecheck)             Checksum: AC139709101763477C89B4135A3A4220;11451.
  ) 
 Here is how much of TeX's memory you used:
  28683 strings out of 469515
- 578604 string characters out of 5470808
- 1013795 words of memory out of 5000000
+ 578628 string characters out of 5470808
+ 1013800 words of memory out of 5000000
  56758 multiletter control sequences out of 15000+600000
  635168 words of font info for 65 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 98i,15n,108p,514b,1190s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,15n,108p,515b,1190s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on CSC2042-Notes.pdf (37 pages, 2908032 bytes).
+Output written on CSC2042S-Notes.pdf (37 pages, 2908070 bytes).
 PDF statistics:
  774 PDF objects out of 1000 (max. 8388607)
  636 compressed objects within 7 object streams
