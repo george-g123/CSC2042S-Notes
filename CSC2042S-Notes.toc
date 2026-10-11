@@ -71,3 +71,19 @@
 \contentsline {subsection}{\numberline {2.7}Back-propagation}{34}{subsection.2.7}%
 \contentsline {subsubsection}{\numberline {2.7.1}A quick review of the chain rule}{34}{subsubsection.2.7.1}%
 \contentsline {subsubsection}{\numberline {2.7.2}What is back-propagation?}{35}{subsubsection.2.7.2}%
+\contentsline {subsubsection}{\numberline {2.7.3}Activation functions}{36}{subsubsection.2.7.3}%
+\contentsline {section}{\numberline {3}Convolution Neural Networks}{36}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Computer vision}{36}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}How computers "see" images?}{36}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Real-world applications}{36}{subsubsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.2}Why do MLPs struggle on images?}{37}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Spatial adjacency}{37}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Parameter explosion}{37}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.3}Inability to handle visual variations}{37}{subsubsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.3}CNN architecture}{38}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Local receptive fields}{38}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}The convolution operation}{38}{subsubsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.3}Multiple kernels per layer}{38}{subsubsection.3.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.4}Feature detection}{38}{subsubsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.4}Convolution operation}{39}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}2D cross-correlation}{39}{subsubsection.3.4.1}%

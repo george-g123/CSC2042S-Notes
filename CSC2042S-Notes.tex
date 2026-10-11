@@ -1371,16 +1371,111 @@ To progagate back one step further for $L=n-1$, we get:
     &=w^{[n]^{\top}}a^{[n-1]}(1-a^{[n-1]})(a^{[n]}-y^{(i)})a^{[n-2]^{\top}}
 \end{align*}
 ... and so on ...
-% \begin{align*}
-%     \resizebox{0.07\textwidth}{\height}{
-%     }
-% \end{align*}
-% \resizebox{0.8\textwidth}{!}{
-% \begin{align*}
-% \frac{\partial\mathcal{L}^{(i)}}{\partial w^{[n]}}&=-\Big[y^{(i)}\frac{\partial}{\partial w^{[n]}}\big[\log(\hat{y}^{(i)})\big]+(1-y^{(i)})\frac{\partial}{\partial w^{[n]}}\big[\log(1-\hat{y}^{(i)})\big]\Big] \\
-% &=-\Big[y^{(i)}\frac{\partial}{\partial w^{n}}\big[\log(\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]}))\big]+(1-y^{(i)})\frac{\partial}{\partial w^{[n]}}\big[1-\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]})\big]\Big] \\
-% &=-\Big[y^{(i)}\frac{1}{a^{[n]}}\frac{\partial}{\partial w^{n}}\big[\log(\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]}))\big]+(1-y^{(i)})\frac{1}{1-a^{[n]}}\frac{\partial}{\partial w^{[n]}}\big[1-\sigma(w^{[n]^{\top}}a^{[n-1]}+b^{[n]})\big]\Big]
-% \end{align*}   
-% }
 \end{note_special}
+
+\subsubsection{Activation functions}
+We need activation functions to encapsulate the complexities. If an activation function is not used, then it is equivalent to linear regression.
+Next, we need to visit the vanishing gradient problem. When does it occur and which activation functions are particularly susceptible to it?
+\begin{itemize}
+    \item It occurs where the gradients in the early layers of a deep neual network become extremely small (approaching zero) during training.
+    \item When the gradients are tiny, the updates to the weights in those layers are also minuscule (learning is very slow/stops altogether). Thus, the early layers fail to learn meaningful features from the data.
+    \item The susceptible functions are \textbf{sigmoid} and \textbf{hyperbolic tangent}.
+\end{itemize}
+
+\section{Convolution Neural Networks}
+\subsection{Computer vision}
+\subsubsection{How computers "see" images?}
+While humans perceive images as a continuous stream of light, computers are fundamentally discrete and interpret images as numerical matrices of pixel values.
+For greyscale images, we have a $H\times W$ matrix where each pixel value typically ranges from 0 to 255. 
+For color images (RGB), we have a $H\times W\times 3$ tensor where each pixel contains three distinct color channels: red, green, and blue.
+
+\subsubsection{Real-world applications}
+Computer vision automates visual perception across multiple core tasks, namely:
+\begin{itemize}
+    \item image classification,
+    \item object recognition and detection, and
+    \item image segmentation
+\end{itemize}
+There are several real-world applications of computer vision:
+\begin{itemize}
+    \item Healthcare and medical imaging.
+    \item Autonomous vehicles and transportation.
+    \item Agriculture (AgriTech).
+    \item Retail and customer experience.
+    \item Security and Surveillance.
+    \item Environmental Monitoring and Conservation.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/CNN_1.png}
+    \end{subfigure}
+\end{figure}
+
+\subsection{Why do MLPs struggle on images?}
+\subsubsection{Spatial adjacency}
+In an image, pixels that are adjacent are strongly correlated and form meaningful patterns like edges, corners, and textures. 
+When a 2D image is flattened into a 1D array, vertical neighbors are separated across the vector. 
+Standard dense layers treat all input elements identically without encoding geometric or spatial structure.
+\subsubsection{Parameter explosion}
+In a dense layer, every input unit connects to every hidden neuron. For a color image of size $1000\times 1000\times 3$, the input vector has 3000000 dimensions.
+Connecting this to a single hidden layer of just 1000 neurons would require $3\times 10^6\times 10^3=3$ billion weights (plus biases).
+This computational burden causes expensive memory usage, high latency, and severe overfitting.
+\subsubsection{Inability to handle visual variations}
+A standard MLP must re-learn the pattern separately at every single pixel position because it lacks translation invariance.
+Real-world computer vision must remain invariant to seven fundamental visual challenges:
+\begin{enumerate}
+    \item \textbf{Intra-class variance:} In other words, each class needs diverse shapes, sizes, colors, etc. 
+    \item \textbf{Transformation variance:} Non-rigid transformations. For example, take a dog. When a dog is curled up or lying down, we still need to be able to classify it as a dog.
+    \item \textbf{Viewpoint variance:} Viewing an object from various perspectives and angles.
+    \item \textbf{Scale variance:} Viewing an object appearing very large (close to the camera) or very small (far away from the camera).
+    \item \textbf{Illumination variance:} Shifts in lighting, shadows, and contrast.
+    \item \textbf{Occlusion:} Objects partially hidden behind other objects/entities, i.e. a leopard hiding behind a rock.
+    \item \textbf{Background clutter:} Objects blending into complex environments (camouflage).
+\end{enumerate}
+
+\subsection{CNN architecture}
+\subsubsection{Local receptive fields}
+Instead of connecting a hidden neuron to every pixel in the image, each neuron connects only to a small, localized sub-region of the input.
+This perserves the adjacency of the pixels. This also reduces the weight count significantly. If each region covers $k$ pixels ($k\ll n$), the number of connections per node drops from $n$ to $k$.
+\subsubsection{The convolution operation}
+A \textbf{kernel} (or \textbf{filter}) is a small learnable weight matrix, typically $2\times 2$. 
+The kernel slides systematically across the input image patch-by-patch. A each location, the network computes an element-wise multiplication between the kernel weights and current image patch, then sums the products (a dot product) to produce a signle value in the feature map.
+\subsubsection{Multiple kernels per layer}
+A single filter can only detect one specific feature type. To capture varied visual patterns, each layer uses multiple independent filters.
+convolving a $6\times 6$ image with two separate $3\times 3$ filters produces two $4\times 4$ feature maps, resulting in an output volume of dimension $4\times 4\times 2$.
+\subsubsection{Feature detection}
+Although each individual filter remains small (e.g. $3\times 3$), stacking layers allows a neuron in a deeper layer to span a wider area of the original input, giving it a broader context window.
+\begin{itemize}
+    \item \textbf{Layer 1:} Detects basic visual stimuli such as oriented edges, color transitions, and lines.
+    \item \textbf{Layer 2:} Combines edge primitives to detect corners, textures, curves, etc.
+    \item \textbf{Layer 3+:} Combines mid-level shapes to recognize complex structural parts and whole objects.
+\end{itemize}
+
+\subsection{Convolution operation}
+\subsubsection{2D cross-correlation}
+For a 2D matrix $I$ and a $k\times k$ kernel $K$, the activation at output coordinate $(i,j)$ is defined as:
+$$
+S(i,j)=(K\ast I)(i,j)=\sum_m\sum_nI(i+m,j+n)K(m,n)
+$$
+\textbf{Example:}
+\begin{align*}
+\underbrace{\begin{bmatrix}
+1 & 2 & 3 & 4 \\
+5 & 6 & 7 & 8 \\
+9 & 10 & 11 & 12 \\
+13 & 14 & 15 & 16
+\end{bmatrix}}_I
+\ast
+\underbrace{\begin{bmatrix}
+0 & -1 & 0 \\
+-1 & 5 & -1 \\
+0 & -1 & 0
+\end{bmatrix}}_K
++\underbrace{5}_b
+=\begin{bmatrix}
+11 & 12 \\
+15 & 16
+\end{bmatrix}
+\end{align*}
 \end{document}
