@@ -6,6 +6,8 @@
 \usepackage[most]{tcolorbox}
 \usepackage[colorlinks=true, linkcolor=blue]{hyperref}
 \usepackage{subcaption, float}
+\usepackage{tabularray, booktabs}
+\UseTblrLibrary{booktabs}
 
 \newtcolorbox{definition}[1][]{
   colback=blue!5!white,
@@ -1478,4 +1480,252 @@ $$
 15 & 16
 \end{bmatrix}
 \end{align*}
+\subsubsection{Multi-channel 3D convolutions}
+Color images contain multiple channels, e.g. RGB has 3 channels. A kernel in a multi-channel layer must match the exact depth of the input volume.
+For an input with $C$ channels, a $k\times k$ filter has spatial dimensions $k\times k\times C$. 
+The filter performans a 2D convolution over each channel independently. The resulting scalar values across all channels are then summed together with the bias to produce one single 2D feature map slice.
+$$
+\text{Output}(i,j)=\Large\Big(\sum_{c=1}^C\sum_m\sum_nI_c(i+m,j+n)K_c(m,n)\Big)
+$$
+\subsubsection{Using multiple filters per layer}
+Because a single filter can only extract one specific feature type, a layer uses $d$ distinct filters.
+Each filter produces its own 2D feature map. Stacking the output yields a feature volume of depth $d$.
+For $d$ filters of size $k\times k$ over an input with $c$ channels:
+$$
+\text{Total Learnable Parameters}=d\times(k^2\cdot c+1)\quad \text{(Including 1 bias per filter)}
+$$
+Notice that the number of parameters is completely independent of the input image's size.
+
+\subsection{Calculating the output size}
+The dimensions of a feature map depend on four parameters:
+\begin{enumerate}
+    \item Input size (width and height)
+    \item Filter size
+    \item Padding
+    \begin{itemize}
+        \item Without padding, the filters cannot extend past the edges, which progressively shrinks the output map.
+    \end{itemize}
+    \item Stride
+    \begin{itemize}
+        \item The step size by which the filter slides across the image.
+    \end{itemize}
+\end{enumerate}
+For an input of size $W\times H$, filter size $K\times K$, symmetric padding $P$, and stride $S$:
+$$
+W_{\text{out}}=\Big\lfloor\frac{W-K+2P}{S}\Big\rfloor+1 \quad\quad
+H_{\text{out}}=\Big\lfloor\frac{H-K+2P}{S}\Big\rfloor+1
+$$
+Then, the output shape is $(W_{\text{out}},H_{\text{out}},d)$ for $d$ distinct filters.
+\\\\
+\textbf{Example:}\\
+Suppose we are training on $256\times 256$ RGB images with a batch size of 64. The input is a 4-dimensional tensor of size $256\times 256\times 3\times 64$.
+Now apply 96 kernels of size $5\times 5\times 3$ with a stride of 2 in both directions.
+$$
+W_{\text{out}}=\Big\lfloor\frac{256-5+2(2)}{2}\Big\rfloor+1=128 \quad\quad
+H_{\text{out}}=\Big\lfloor\frac{256-5+2(2)}{2}\Big\rfloor+1=128
+$$
+Then, the output tensor is of size $128\times 128\times 96\times 64$ ($W_{\text{out}}\times H_{\text{out}}\times \text{Channels}\times \text{Batch Size}$).
+\subsection{3D convolution as matrix multiplication}
+\textbf{Example 1:}\\
+Given $d=64$ filters, each of shape $c\times k\times k=3\times 3\times 3$ and an input image with size $32\times 32$, flatten each 3D filter into a row vector of length $3\times 3\times 3=27$.
+$$
+\text{Weight Matrix Shape}=d\times (c\cdot k^2)=64\times 27
+$$
+Extract every local $3\times 3\times 3$ receptive field patch from the input ($3\times 32\times 32$) and flatten each patch into a column vector of length 27.
+For an output grid of $32\times 32=1024$ patch positions, align these column side-by-side:
+$$
+\text{Feature Matrix Shape}=(c\cdot k^2)\times(w\cdot h)=27\times 1024
+$$
+Computing the standard 2D matrix dot product:
+$$
+Y_{\text{mat}}=(64\times 27)\times(27\times 1024)=64\times 1024
+$$
+Reshape the resulting $64\times 1024$ matrix back into the target 3D tensor: $64\times 32\times 32$.
+
+\subsection{Non-linearity and pooling}
+Every convolution block combines linear filtering with non-linear activation and downsampling.
+\subsubsection{Non-linearity}
+CNNs apply an element-wise activation function, typically ReLU, directly after a convolution.
+ReLU introduces non-linear decision boundaries while perserving gradient flow during backpropagation.
+\subsubsection{Pooling (downsampling)}
+Pooling reduces the spatial size of the feature map using a fixed aggregation function over sliding windows.
+Unlike convolutional kernels, pooling filters do not have weights or biases. Their operation is fixed.
+It serves two purposes:
+\begin{enumerate}
+    \item \textbf{Computational efficiency:} Downsamples spatial dimentionality, reducing the memory footprint and the number of parameters required in downstream layers.
+    \item \textbf{Translational invariance:} Summarizing local windows makes the model robust to small shifts in feature locations.
+\end{enumerate}
+\textbf{Max pooling vs. Average Pooling}\\
+Both operations slide a window of size $l\times l$ with stride $s$.
+\\\\
+\begin{tblr}{width=\textwidth, colspec={l X[l] X[l]}, row{1}={font=\bfseries}}
+\toprule
+Feature & Max Pooling & Average Pooling \\
+\midrule
+Operation & Selects $\max\{x_1,x_2,\dots,x_n\}$ in the window. & Computes $\frac{1}{n}\sum_{i=1}^n x_i$ over the window. \\
+Visual role & Acts like a boolean \textbf{OR gate}. It records whether a feature appeared anywhere in the window. & Smooths activations. It retains background context. \\
+\bottomrule
+\end{tblr}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/CNN_2.png}
+    \end{subfigure}
+\end{figure}
+
+\subsection{Convolutional layer vs. pooling layer}
+The convolutional layer and pooling layer server distinct mathematical and functional roles in the network:
+\\\\
+\begin{tblr}{width=\textwidth, colspec={l X[l] X[l]}, row{1}={font=\bfseries}}
+\toprule
+Property & Convolutional layer & Pooling layer \\
+\midrule
+Primary objective & Feature extraction and localized pattern detection. & Spatial downsampling and feature aggregation. \\
+Learnable parameters & Contains learnable weights $K$ and biases $b$ updated via backpropagation. & Zero learnable parameters. It applies fixed deterministic functions. \\
+Invariance & Translation equivariant & Translation invariant \\
+\bottomrule
+\end{tblr}
+
+\subsection{Macro architecture}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/CNN_3.png}
+    \end{subfigure}
+\end{figure}
+A full CNN is divided into two distinct components: the feature extractor and the classifier.
+\begin{itemize}
+    \item \textbf{The feature extractor:} Transforms raw pixel values into abstract, high-level semantic feature representations using stacked [Conv$\to$ReLU$\to$Pool] blocks. As representations move deeper, spatial dimensions contract while feature depth expands.
+    \item \textbf{The bridge (flattening):} A parameter-free reshape layer that converts the 3D tensor output of the final pooling layer ($W\times H\times C$) into a flat 1D feature vector of length $W\cdot H\cdot C$.
+    \item \textbf{The classifier head (dense MLP):} Standard fully connected layers that take the global feature vector, model non-linear interactions across all extracted features, and project them to class logits before computing normalized probabilities via softmax.
+\end{itemize}
+
+\subsection{Backpropagation in CNNs}
+\subsubsection{Backpropagation through convolutional layers}
+The backward pass through a convolutional layer is itself a convolutional operation. Let the layer's forward pass be $Y=X\ast K$, where $\frac{\partial \mathcal{L}}{\partial Y}$ is the upstream error gradient received from the subsequent layer.
+\\\\
+\textbf{Gradient w.r.t filer weights ($\frac{\partial \mathcal{L}}{\partial K}$):}\\
+The gradient of the loss with respect to the kernel weights $K(m,n)$ is the convolution between the input $X$ and the upstream output gradient $\frac{\partial \mathcal{L}}{\partial Y}$:
+$$
+\frac{\partial \mathcal{L}}{\partial K}=X\ast\frac{\partial \mathcal{L}}{\partial Y}
+$$
+\\\\
+\textbf{Gradient w.r.t layer inputs ($\frac{\partial \mathcal{L}}{\partial X}$):}\\
+To pass the gradient back to the preceding layer, the upstream gradient $\frac{\partial \mathcal{L}}{\partial Y}$ is convolved with the spatially rotated (flipped by 180$^{\circ}$) kernel $K^{\text{rot}}$:
+$$
+\frac{\partial \mathcal{L}}{\partial X}=\frac{\partial \mathcal{L}}{\partial Y}\ast K^{\text{rot}}
+$$
+\\\\
+\textbf{Gradient w.r.t biases ($\frac{\partial \mathcal{L}}{\partial b}$):}\\
+Because a single scalar bias $b$ is shared across the entire spatial feature map, its gradient is the sum of all elements in the upstream error map:
+$$
+\frac{\partial \mathcal{L}}{\partial b}=\sum_i\sum_j\Big(\frac{\partial \mathcal{L}}{\partial Y}\Big)_{i,j}
+$$
+\subsubsection{Backpropagation through max pooling layers}
+Because max pooling contains no weights, it does not generate parameter updates. However, it must route upstream error gradients back to the preceding layer.
+There is a routing problem. Max pooling discards 75\% of activation values (in a $2\times 2$ window) during the forward pass. Non-maximal neurons have a local forward derivative of zero ($\frac{\partial y}{\partial x_i}=0$), so they do not receive gradient signals.
+A solution to this problem is the \textbf{winner-takes-all mechanism}. The network stores the coordinate of the maximum value within each pooling window:
+$$
+\text{Mask}(i,j)=\begin{cases}
+    1 & \text{if }x_{i,j}=\max(\text{Window}) \\
+    0 & \text{otherwise}
+\end{cases}
+$$
+The upstream gradient $\frac{\partial \mathcal{L}}{\partial Y}$ is passed exclusively to the winning neuron, while all non-maximal neurons receive a gradient of 0:
+$$
+\frac{\partial \mathcal{L}}{\partial X_{i,j}}=\frac{\partial \mathcal{L}}{\partial Y}\cdot\text{Mask}(i,j)
+$$
+
+\section{Unsupervised Learning}
+\subsection{What is unsupervised learning?}
+The unsupervised learning problem is framed as finding structure in $x$ without labels $y$. Inputs are examples in the dataset represented by features.
+Given a new example $x$ where does this fit into the data? We start with a dataset that does not contain labels and seek to discover interesting and useful patterns in this data, such as:
+\begin{itemize}
+    \item \textbf{Clusters:} Find clusters of related data points across the dataset. For example, groups of similar e-commerce customers.
+    \item \textbf{Dimensionality:} Identify features that explain the most important parts of the data (dimensionality reduction). For example, SKA data compression.
+    \item \textbf{Missing values:} Predict missing values based on similar entries in the data. For example, user movie rating prediction.
+    \item \textbf{Detect outliers:} Detect outliers, i.e. particularly unusual or interesting data points. For example, suspicious financial transactions.
+\end{itemize}
+
+\subsection{Outlier detection}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/CNN_5.png}
+    \end{subfigure}
+\end{figure}
+
+\subsection{Dimensionality reduction}
+For example, principal component analysis (PCA).
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/CNN_6.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+Some use cases:
+\begin{itemize}
+    \item \textbf{Visualization} of high-dimensional in 2D or 3D (e.g. using t-SNE).
+    \item \textbf{Compression} of large datasets.
+    \item \textbf{Reduce computational cost} for data processing or as input to other machine learning models.
+\end{itemize}
+
+\subsection{Clustering}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/CNN_4.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+We group data into potentially useful groups. This is perhaps the most common unsupervised learning task.
+\begin{itemize}
+    \item Automatically organize data and simplify data for further analysis.
+    \item Can lead to a better understanding of data.
+    \item Dsicovering groups of data can have practical value.
+\end{itemize}
+Here are some key practical uses:
+\begin{itemize}
+    \item \textbf{Recommendation systems:} Group similar items/users together and make movie recommendations based on these clusters.
+    \item \textbf{Anomaly detection:} Points that do not belong to any cluster (outliers) or are far from other clusters can be flagged as anomalies.
+    \item \textbf{Image segmentation:} Divide images into regions based on pixel similarity. Useful in applications such as object recognition.
+    \item \textbf{Document clustering:} Clustering groups similar documents together. useful for topic modeling and information retrieval.
+\end{itemize}
+What properties should good clustering of a dataset have?
+\begin{itemize}
+    \item Data points inside each cluster are close together $\Rightarrow$ \textbf{Intra-cluster} similarity is minimized.
+    \item Data points in different clusters are far apart $\Rightarrow$ \textbf{Inter-cluster} similarity maximized.
+\end{itemize}
+\subsubsection{Two types of clustering algorithms}
+\textbf{Hierarchical clustering:}\\
+Clusters form a nested hierarchy. Agglomerative (bottom-up) starts with samples and merges samples in groups according to some criteria. Divisive (top-down) splits the data into clusters.
+\\\\
+\textbf{Partitional/Flat clustering:}\\
+No inter-cluster structure. Flat partitioning directly partitions data into distinct, non-overlapping subsets without building parent-child relationships between clusters.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/CNN_7.png}
+    \end{subfigure}
+\end{figure}
+\subsubsection{Decisions for clustering}
+There are two options for the distance function:
+\begin{enumerate}
+    \item \textbf{Euclidean distance}
+    $$
+    d(p,q)=||q-p||=\sqrt{\sum_{i=1}^{n}(q_i-p_i)^2}
+    $$
+    \item \textbf{Cosine similarity}
+    $$
+    d(p,q)=\frac{p\cdot q}{||p||\cdot||q||}
+    $$
+\end{enumerate}
+Which clustering algorithm? \textbf{K-means clustering}.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/CNN_8.png}
+    \end{subfigure}
+\end{figure}
 \end{document}
