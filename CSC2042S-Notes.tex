@@ -7,6 +7,7 @@
 \usepackage[colorlinks=true, linkcolor=blue]{hyperref}
 \usepackage{subcaption, float}
 \usepackage{tabularray, booktabs}
+\usepackage{listings}
 \UseTblrLibrary{booktabs}
 
 \newtcolorbox{definition}[1][]{
@@ -39,8 +40,33 @@
   breakable
 }
 
-\begin{document}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    % numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\begin{document}
 
 \begin{titlepage}
     \centering
@@ -161,6 +187,397 @@ $\quad$\\[-1em]
 This is called a linear regression model and can be formalized as: 
 Let $x$ be the number of rooms and $y$ be the predicted price, then $y=wx+b$.
 The parameters $w$ and $b$ are values we want to learn during training.
+
+\subsection{Perceptron}
+\begin{definition}[Perceptron]
+The perceptron is a binary classifier. For a given input vector $x$, it predicts one of two classes as output (represented by 0 or 1) with a step function.
+\end{definition}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/perceptron_1.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+The input $x$ is passed through a weighted sum, the result of which is passed through the step function.
+\begin{itemize}
+    \item $\mathbf{x}$ is the input vector,
+    \item $\mathbf{w}$ is the weight vector, and
+    \item $b$ is the bias term.
+\end{itemize}
+The perceptron is a linear, binary classification algorithm. It is \textbf{binary} since we classify input into one of two classes e.g. negative or positive.
+It is also \textbf{linear} because the classification decision is based on a value that is a linear combination of input values $(x_1,x_2,\dots,x_n)$.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/perceptron_2.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+What can we do with perceptrons? We can implement primitive boolean functions!
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/perceptron_3.png}
+    \end{subfigure}
+\end{figure}
+
+\subsection{Perceptron learning rule}
+\begin{definition}[Optimization]
+\textbf{Optimization} is the mathematical process of finding the best parameters for machine learning model for a specific task.
+\end{definition}
+$\quad$\\[-1em]
+We considering a binary (0 or 1) classification problem. Can we find the weights and bias that would classify inputs $x$ correctly as either 0 or 1?
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/perceptron_4.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+There is a simple weight update rule that converges to a solution that classifies data perfectly (if the data is linearly separable).
+For a single data example $(\mathbf{x},y)$, where $\mathbf{x}$ is a vector:
+\begin{align*}
+    \mathbf{w}&\leftarrow\mathbf{w}+\alpha(y-g(\mathbf{x}))\mathbf{x} \\
+    b&\leftarrow b+\alpha(y-g(\mathbf{x}))
+\end{align*}
+$\alpha$, which is always positive, is called the \textbf{learning rate} (size of parameter updates).
+We specify this ourselves. It is an example of a hyperparameter. If it's too big, the model might not converge.
+If it's too small, the model might take too long to converge.
+\begin{definition}[Hyperparameter]
+A \textbf{hyperparameter} is a configuration variable external to the model whose value is fixed before training begins. Hyperparameters control the learning process and the structure of the model.
+\end{definition}
+\subsubsection{Error correction learning algorithm}
+\begin{enumerate}
+    \item Initialize all weights randomly.
+    \item For each training example, apply the perceptron learning rule.
+    \item Repeat untill the error is acceptable or $N$ iterations (cutoff) is reached.
+\end{enumerate}
+\subsubsection{Train/validation/test sets}
+Datasets are usually split into 3 subsets.
+\begin{itemize}
+    \item \textbf{Training set:} data used to train your machine learning model (the learning process).
+    \item \textbf{Validation set:} data used to evaluate model performance during
+    \begin{itemize}
+        \item Training: track performance while model is learning.
+        \item Development: compare modelling decisions and configurations e.g. hyperparameter settings.
+    \end{itemize}
+    \item \textbf{Test set:} data used to evaluate performance once the final model has been trained e.g. compare perceptron to other types of models.
+\end{itemize}
+Datasets are used in two ways:
+\begin{itemize}
+    \item Training sets are used for learning: update model parameters based on data in the training set.
+    \item Validation and test sets are used for evaluation. You only use it for prediction, comparing model outputs to expected outputs or evaluate model performance on data that it was not trained on.
+\end{itemize}
+\begin{warning}[Super important]
+Do not train your model on your validation or test sets!
+\end{warning}
+$\quad$\\[-1em]
+Usually, the full dataset is split into train/validation/test sets proportionally e.g. 80\%/10\%/10\%.
+You want to train on most of the data (maximize performance). You want to test your model on data that it hasn't seen before. Why?
+To evaluate if your model is generalizing to new examples. If you test your model on data which it was trained, maybe it's just memorizing specific training examples.
+\begin{definition}[Data leakage]
+\textbf{Data leakage} is when test data is "contaminated" with training data, so we are not getting a reliable evaluation of performance.
+\end{definition}
+\subsubsection{Training loop}
+\begin{definition}[Training loop]
+A \textbf{training loop} is the process of going through the whole training set once which is called an \textbf{epoch} of training. Training takes time, potentially requires multiple epochs.
+\end{definition}
+$\quad$\\[-1em]
+We need to go through the entire training set, on example at a time, each time updating parameters with the perceptron learning rule. 
+Train for multiple epochs, logging validation accuracy at regular intervals to track performance e.g. after each epoch or after every $M$ parameter updates, where $M$ is fixed and specified by the programmer.
+\begin{lstlisting}[language=Python]
+Create new perceptron P with randomly initialized weights and bias for number of epochs E:
+
+    # Learn from the training data
+    for each example (x_i, y_i) in the training set:
+        P.apply_learning_rule(x_i, y_i)
+    
+    # Evaluate on the validation data
+    for each example (x_i, y_i) in the validation set:
+        P.predict(x_i, y_i) and store prediction
+    
+    Print the current validation accuracy
+\end{lstlisting}
+During development, you should try different hyperparameter settings. For a perceptron, train models with different learning rates.
+\subsubsection{Perceptron convergence}
+\begin{definition}[Convergence]
+\textbf{Convergence} is when the algorithm finds weights and bias such that all training examples are classified correctly, after which $\mathbf{w}$ and $b$ reamin unchanged.
+\end{definition}
+$\quad$\\[-1em]
+The perceptron learning algorithm is guaranteed to converge to a solution in finite steps if:
+\begin{itemize}
+    \item training examples are linearly separable, and
+    \item learning rate is sufficiently small.
+\end{itemize}
+\begin{warning}[Important]
+If the data is not linearly separable, the algorithm never converges. It will keeps updating parameters indefinitely!
+\end{warning}
+$\quad$\\[-1em]
+Handling linearly non-separable data:
+\begin{itemize}
+    \item In practice, we often apply the perceptron even when data is not perfectly separable.
+    \item Perceptrons can still learn a "good enough" separator that minimizes errors, though not perfect.
+    \item To avoid endless updates, we must define stopping conditions that ensure that algorithm halts, even if perfect classification is impossible.
+\end{itemize}
+Potential stopping criteria:
+\begin{itemize}
+    \item \textbf{Maximum number of epochs:} stop training after a fixed number $E$ of full passes through the training set.
+    \item \textbf{Maximum number of updates:} stop training after a fixed number $M$ of perceptron learning rule applications.
+    \item \textbf{Early stopping:} stop when the validation accuracy stops improving for a predetermined number of training epochs $P$ or training steps $S$.
+\end{itemize}
+
+\subsection{Multi-class classification}
+The problem is framed as mapping inputs $x$ to outputs $y$, where $y\in\{1,\dots, K\}$ with $K>2$. The target variable is still discrete and can only take a finite set of possible values, which are knwown in advance.
+Many taks can be framed in this way:
+\begin{itemize}
+    \item \textbf{News categorization:} predict if an article is sport/politics/tech.
+    \item \textbf{Mood prediction:} categorize customer feedback as happy/sad/angry/neutral.
+    \item \textbf{Face identification:} determine which of your 100+ instagram friends are in a photo.
+\end{itemize}
+\subsubsection{One-vs-rest classification}
+A way to use binary classification models for multi-class classification.
+\begin{itemize}
+    \item Train $K$ binary classifiers.
+    \item Each classifier is trained to classify one class against all other classes.
+    \item To make a prediction for a data point, all $K$ classifiers are used. The class predicted with the largest margin is taken as the predicted class.
+\end{itemize}
+For $K$-class classification, train $K$ perceptrons:
+$$
+g_c(\mathbf{x})=\begin{cases}
+    1 & \mathbf{w}_c\cdot \mathbf{x}+b_c\ge 0 \\
+    0 & \mathbf{w}_c\cdot \mathbf{x}+b_c < 0
+\end{cases}
+\quad\quad
+\text{for each class }c\in\{0,\dots,K-1\}
+$$
+Each perceptron has its own weight vector $\mathbf{w}_c$ and bias $b_c$. But the final multi-class prediction is not this binary output- it's based on the weighted sum $\mathbf{w}_c\cdot\mathbf{x}+b_c$, which is the "score" given for class $c$.
+To make a final decision, we compute all the linear scores:
+$$
+s_c(\mathbf{x})=\mathbf{w}_c\cdot\mathbf{x}+b_c\quad\quad\text{for each class }c\in\{1,\dots,K-1\}
+$$
+and then choose the predicted class as the one with the largest score:
+$$
+\hat{y}=\underset{c\in\{0,\dots,K-1\}}{\text{argmax}}s_c(\mathbf{x})
+$$
+where $\hat{y}$ is the prediction. Each perceptron predicts "is this class $c$ or not?" The one-vs-rest multi-class perceptron chooses the class whose perceptron is most confident.
+\subsubsection{Evaluation metrics}
+$$
+\text{accuracy}=\frac{\text{\# correct predictions }(\hat{y}=y)}{\text{\# total predictions (evaluation dataset size)}}
+$$
+The accuracy is a single number to summarize and compare classifier performance. But it can also be skewed in some cases e.g. when one class occurs a lot more than others.
+$$
+\text{error}=1-\text{accuracy}
+$$
+In some tasks, we care more about one class (e.g. rare positive cases). Sometimes the priority is to detect all positives, even if that means more false alarms e.g. disease diagnosis, fraud detection.
+Other times the priority is to avoid false positives, even if that means missing some positives, e.g. spam filters.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/multiclass_1.png}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/multiclass_2.png}
+    \end{subfigure}
+\end{figure}
+$$
+\text{precision}=\frac{\text{TP}}{\text{TP}+\text{FP}}=\frac{\text{\# True positives}}{\text{\# Predicted positives}}
+$$
+The precision measures: of all items predicted as positive ($\hat{y}=1$), what fraction is actually positive ($y=1$)?
+It quantifies how "precise" your classifier is in identifying positives. For example, of all emails flagged as spam, how many actually are?
+\textbf{Maximizing precision = minimizing false positives.}
+$$
+\text{recall}=\frac{\text{TP}}{\text{TP}+\text{FN}}
+$$
+The recall measures: of all actual positives ($y=1$), what fraction is predicted as positive ($\hat{y}=1$)?
+It quantifies how good your classification is covering all positive cases. For example, of all actual COVID-19 cases, how many are diagnosed by a specific test?
+\textbf{Maximizing recall = minimizing false negatives.} 
+$$
+\text{F1 score}=2\times\frac{\text{precision}\times\text{recall}}{\text{precision}+\text{recall}}
+$$
+The F1 score is the harmonic mean of precision and recall. It balances the importance of precision and recall, and is preferable to accuracy for class-imbalanced datasets.
+\begin{itemize}
+    \item When the precision and recall are both 1 $\Rightarrow$ F1 = 1.
+    \item When the precision and recall are similar, F1 will be close to both.
+    \item When the precision and recal are far apart, F1 will be closer to whichever is worse.  
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/multiclass_3.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+Confusion matrices can also be generalized to multi-class classification.
+Calculate the precision, recall, F1 for class $c\in\{1,\dots,K\}$ by treating each class in turn as the positive class and the rest as negative.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/multiclass_4.png}
+    \end{subfigure}
+\end{figure}
+
+\subsection{Perceptron modelling decison}
+\subsubsection{Parameter initialization}
+Parameters are learned throughthe perceptron learning rule, but what are their initial values? In machine learning, parameters are randomly initialized.
+Initialization is only the starting point. Parameters are adjusted during training anyway to improve performance.
+How you initialize parameters affects convergence speed and the path the perceptron takes during training.
+While the perceptron will eventually converge (if linearly separable), good initialization can make convergence faster and smoother.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/PMD_1.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+There are options for initializing perceptron weights (and bias):
+\begin{itemize}
+    \item \textbf{Zero initialization:}
+    \begin{itemize}
+        \item All parameters start at 0.
+        \item Works for binary perceptron, but not always for multi-class perceptrons.
+        \item \begin{lstlisting} 
+np.zeros(n_inputs)
+\end{lstlisting}
+    \end{itemize}
+    \item \textbf{Small constant initialization:}
+    \begin{itemize}
+        \item All parameters start at a small constant value, e.g. 0.01
+        \item \begin{lstlisting}
+np.full(n_inputs, 0.01)
+\end{lstlisting}
+    \end{itemize}
+    \item \textbf{Uniform random initialization:}
+    \begin{itemize}
+        \item Parameters are random values drawn from a uniform distribution.
+        \item \begin{lstlisting}
+np.random.uniform(-0.01, 0.01, n_inputs)            
+\end{lstlisting}
+    \end{itemize}
+    \item \textbf{Gaussian initialization:}
+    \begin{itemize}
+        \item Parameters are random values drawn from a normal distribution.
+        \item \begin{lstlisting}
+np.random.normal(0.0, 0.01, n_inputs)            
+\end{lstlisting}
+    \end{itemize}
+\end{itemize}
+\subsubsection{Feature representation}
+The big question is: how do you represent data points? For this, we use multi-dimensional vectors. Each inputs in the dataset $\{(x_1,y_1),(x_2,y_2),\dots,(x_n,y_n)\}$ is represented as an $n$-dimensional vector. The choice of features $x_{i1},x_{i2},\dots,x_{in}$ will be different for different tasks/domains.
+For image processing tasks (e.g. MNIST classification) you can flatten the pixel matrix into a vector. A $28\times 28$ image is a 784-dimensional vector.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/PMD_2.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+For some taks, color information could be worth including. Color images store RGB (red-green-blue) values. The earliest way to represent the image as a vector is to flatten the RGB values.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/PMD_3.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+Features can have very different scales, e.g. $x_1\in[0,1]$ or $x_2\in[0,1000]$.
+\begin{itemize}
+    \item Distances and dot products are dominated by large-scale features.
+    \item For classifiers based on Euclidean distance (e.g. k-nearest neighbor), decisions can mostly eflect large features, ignoring the smaller one.
+    \item For perceptrons, the weight updates can be skewed towards large-magnitude features.
+    \item As a consequence, it results in slow/unstable convergence and poor decision boundaries.
+\end{itemize}
+\subsubsection{Normalization (min-max)}
+With min-max scaling, we rescale each feature individually to a fixed range, typically $[0,1]$.
+$$
+x_{ij}^{\text{max}}=\frac{x_{ij}-\text{min}_l(x_{lj})}{\text{max}_l(x_{lj})-\text{min}_l(x_{lj})}
+$$
+where:
+\begin{itemize}
+    \item $x_{ij}$ is the value of feature $j$ for data point $i$.
+    \item $\text{max}_l(x_{lj})$ is the maximum value of feature $j$ across all data points.
+    \item $\text{min}_l(x_{lj})$ is the minimum value of feature $j$ across all data points.
+\end{itemize}
+This keeps all inputs in the same range. Rather intuitive for image pixels (0-255 is mapped to 0-1).
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/PMD_4.png}
+    \end{subfigure}
+\end{figure}
+\begin{warning}[Important]
+Compute $\text{min}_l(x_{lj})$ and $\text{max}_l(x_{lj})$ from the \textbf{training set only.} Apply to the training, validation and test sets.
+\end{warning}
+\subsubsection{Normalization (Z-score)}
+With Z-score normalization, we center and scale features to habe a mean of 0 and variance of 1.
+$$
+x_{ij}^{\text{new}}=\frac{x_{ij}-\bar{x}_j}{\sigma_j}
+$$
+where:
+\begin{itemize}
+    \item $x_{ij}$ is the value of feature $j$ for a data point $i$.
+    \item $\bar{x}_j$ is the mean value of feature $j$ in the training data.
+    \item $\sigma_j$ is the standard deviation of feature $j$ in the training data.
+\end{itemize}
+It is robust when featues have different units, with measurements producing varying feature distributions e.g. age vs height. Also robust when outliers are present.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/PMD_5.png}
+    \end{subfigure}
+\end{figure}
+\subsubsection{Overfitting}
+Overfitting is when your model is fitting the details of the training data so closely that the model doesn't generalize well to the test set. This happens when the model is over-parameterized. It has more parameters that required to model the data.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/PMD_6.png}
+    \end{subfigure}
+\end{figure}
+How can overfitting happen for a perceptron?
+\begin{itemize}
+    \item Each weight $w_i$ corresponding to and input feature $x_i$.
+    \item During training, the value $w_i$ is learned such that $w_ix_i$ will contribute to improving the accuracy for examples in the training set.
+    \item If a feature $x_i$ happens to only occur in one class in the training data, the model could learn a very high weight $w_i$ and perfectly predict $y$.
+    \item In this case, the model will fail to generalize to the test set without this feature.
+\end{itemize}
+Overfitting will result in a high (even perfect) accuracy on training data, bu a low accuracy on validation and test data. That's why it's important to track validation performance during training.
+\subsubsection{Early stopping}
+Validation performance typically improves first, then (sometimes) degrades as overfitting sets in. After this, improving the model's fit to the training data comes at the expense of generalization.
+Early stopping is when we stop training when the performance on a held-out validation dataset stops improving, to avoid overfitting. It is commonly used in machine learning to prevent overfitting.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/PMD_7.png}
+    \end{subfigure}
+\end{figure}
+\subsubsection{Validation set}
+\begin{definition}[Validation set]
+A \textbf{validation set} is a held-out set not used for training the model. It's purpose is to estimate how the model will generalize. It is used during and after training.
+\end{definition}
+$\quad$\\[-1em]
+\textbf{Use 1: During training} \\
+It is used to track performance on unseen data while training. It helps to detect overfitting and enables early stopping. The validation curves is the "progress report."
+\\\\
+\textbf{Use 2: After training (hyperparameter tuning)} \\
+For each hyperparameter setting, we train the model until completion, and then record the final/best accuracy achieved. Each hyperparameter setting has one final validation score. 
+Compare this across different settings to choose the best hyperparameters.
+\begin{enumerate}
+    \item Choose your stopping criteria.
+    \item Choose the range of your hyperparameter search.
+    \begin{itemize}
+        \item learning rate e.g. $\{0.01, 0.05, 0.1, 0.5\}$.
+        \item initialization e.g. $\{\text{zeros, uniform, gaussian}\}$.
+        \item feature normalization e.g. $\{\text{none, normalization, standardization}\}$.
+    \end{itemize}
+    \item Train the model for each possible combination of hyperparameters, saving the final/best validation accuracy. This is typically called grid search.
+\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.6\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/PMD_8.png}
+    \end{subfigure}
+\end{figure}
 
 \subsection{Simple linear regression}
 A simple linear regression model predicts the output as a linear function of one input feature $x$: $y=wx+b$, otherwise known as a straight line function. Changes in $x$ imply a proportional change in $y$. Even if the relationship is not perfectly linear, linear regression can still be effective as an approximation or baseline model.
