@@ -8,6 +8,7 @@
 \usepackage{subcaption, float}
 \usepackage{tabularray, booktabs}
 \usepackage{listings}
+\usepackage{amsmath, amssymb}
 \UseTblrLibrary{booktabs}
 
 \newtcolorbox{definition}[1][]{
@@ -2209,6 +2210,213 @@ Which clustering algorithm? \textbf{K-means clustering}.
     \centering
     \begin{subfigure}{0.6\textwidth}
         \includegraphics[width=\linewidth]{Pictures/CNN_8.png}
+    \end{subfigure}
+\end{figure}
+
+\subsection{K-means clustering}
+The goal of k-means clustering is to partition the data into $k$ disjoint subsets, where $k$ is prespecified. The setup:
+\begin{itemize}
+    \item Assume that the data points to be clustered are $n$-dimensional real valued vectors $\mathbf{x}$.
+    \item Let the set of data points $D$ be $\{\mathbf{x}_1,\mathbf{x}_2,\dots,\mathbf{x}_{|D|}\}$, where $\mathbf{x}_i$ is an $n$-dimensional vector in a real valuead space $\mathbf{x}_i\in\mathbb{R}^n$.
+    \item Use a vector-based similarity/distance metric e.g. Euclidean distance.
+    \item Assume the mean of data points can be computed.
+\end{itemize}
+\subsubsection{K-means algorithm}
+The $k$-means algorithm partitions the given data into $k$ clusters.
+\begin{itemize}
+    \item Each data point is assigned to a cluster.
+    \item Each cluster has a cluster center, called a \textbf{centroid}.
+    \item The number of clusters $k$ is specified by the programmer.
+\end{itemize}
+How can we fin the best clustering?
+\begin{itemize}
+    \item Given $k$ centroids, we can assign each data point to the cluster of its closest centroid.
+    \item Given a cluster assignment for each data point, we can calculate the centroid of each cluster as the mean of its data points. If this assignment is stable, then we should have a good clustering!
+\end{itemize}
+It's an iterative algorithm that re-assigns clusters until convergence.
+\begin{enumerate}
+    \item Randomly choose $k$ data points to be the initial centroids.
+    \item Repeat until the cluster assignments stop changing:
+    \begin{enumerate}
+        \item For each data point $i$, assign $x_i$ to the cluster $j$ with the closest centroid $c_j$.
+        \item For each cluster $j$, compute the new centroid $c_j$ as the mean of all data points $x_i$ currently in cluster $j$.
+    \end{enumerate}
+\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/kmeans_1.png}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/kmeans_2.png}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/kmeans_3.png}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/kmeans_4.png}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/kmeans_5.png}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/kmeans_6.png}
+    \end{subfigure}
+\end{figure}
+\subsubsection{K-means algorithm details}
+\begin{enumerate}
+    \item Place $k$ centroids $c_1,\dots,c_k$ at random locations, e.g. sample $k$ vectors from $\{x_1,x_2,\dots,x_{|D|}\}$.
+    \item \begin{enumerate}
+        \item For each data point $x_i$ for $i=1,\dots,|D|$
+        \begin{itemize}
+            \item Find centroid $c_j$ closest to $x_i$
+$$
+c_j=\underset{c_j\in\{c_1,\dots,c_k\}}{\text{argmin}}\hspace{2pt}d(x_i,c_j)
+$$
+            \item Using the distance function $d$:
+$$
+d(x_i,c_j)=||x_i-c_j||=\sqrt{\sum_{r=1}^{n}(x_{ir}-c_{jr})^2}
+$$
+            \item Assign point $x_i$ to cluster $j$. Let $R_j$ be the set of data points assigned to cluster $j$.
+        \end{itemize}
+        \item For each cluster $j=1,\dots,k$:
+        \begin{itemize}
+            \item Compute new centroid $c_j$ as the mean of all data points $x_i$ assigned to cluster $j$ in the previous step:
+$$
+c_j^{\text{new}}=\frac{1}{|R_j|}\sum_{x_i\in R_j}x_i
+$$
+            \item Repeat steps 2(a) and 2(b) until convergence (i.e. until the cluster assignments don't change)
+        \end{itemize}
+    \end{enumerate}
+\end{enumerate}
+\subsubsection{K-means loss function}
+What is the performance measure that the K-means algorithm is aiming to optimize?
+\begin{itemize}
+    \item Select the clusters to minimize the sum of the distances from each data point to its cluster centre.
+    \item This is equivalent to minimizing the sum of the pairwise (squared) distances within each cluster, i.e. the \textbf{intra-cluster similarity}.
+\end{itemize}
+The loss function is therefore:
+$$
+\underset{R_1,\dots,R_k}{\text{argmin}}\sum_{j=1}^{k}\sum_{x_1,x_2\in R_j}||x_1-x_2||^2
+$$
+Or, equivalently
+$$
+\underset{R_1,\dots,R_k}{\text{argmin}}\sum_{j=1}^{k}\sum_{x\in R_j}||x-c_j||^2
+$$
+To optimize this function exactly is an NP-hard problem. The k-means algorithm finds a local minimum.
+\subsubsection{K-means algorithm: stopping criterion}
+When has the algorithm converged?
+\begin{itemize}
+    \item No data points re-assigned to different clusters.
+    \item No change of centroids.
+    \item Change in the loss function is lower than some threshold.
+    \item Largest change in centroid position is below some threshold.
+    \item Stop after a set maximum number of iterations.
+\end{itemize}
+\subsubsection{K-means algorithm: initialization}
+How do we initialize the centroids?
+\begin{itemize}
+    \item Random initialization: best to run the algorithm multiple times and take the clustering with the lowest loss.
+    \item Heuristic initialization: spread the $k$ initial clusters centres around (k-means++)
+    \begin{itemize}
+        \item Pick first centre randomly among the data points
+        \item To pick each of the remaining centres:
+        \begin{itemize}
+            \item Compute the distance $d(x)$ of each $x$ to the nearest already chosen centre.
+            \item Choose new centre to be far away from the existing centroids: sample point with probability distribution proportional to $d(x)^2$.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+\subsubsection{K-means algorithm: Choosing $k$}
+How many clusters are optimal?
+\begin{itemize}
+    \item Could run the algorithm with various values of $k$, then pick $k$ to minimize the loss function.
+    \begin{itemize}
+        \item But more clusters will always decrease the loss. In the extreme case, each data point would be its own cluster.
+        \item This is an example of overfitting.
+    \end{itemize}
+    \item Instead plot the loss, check where the loss appears to level off, and inspect the clusters at that point.
+    \item If the data has a small number of distinct clusters, the graph will have an "elbow" shape.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/kmeans_7.png}
+    \end{subfigure}
+\end{figure}
+\subsubsection{K-means algorithm: benefits}
+\begin{enumerate}
+    \item Simple, easy to understand and implement.
+    \item K-means clustering is fast and efficient with time complexity $O(NKT)$, where:
+    \begin{itemize}
+        \item $N$ is the number of data points,
+        \item $K$ is the number of clusters, and
+        \item $T$ is the number of iterations
+    \end{itemize}
+    \item It is guaranteed to converge. It can always find a local optimum, but not necessarily the global optimum.
+\end{enumerate}
+\subsubsection{K-means algorithm: disadvantages}
+\begin{enumerate}
+    \item Applicable only when the mean is defined. What about categorical data?
+    \item Need to specify $k$ (number of clusters) in advance.
+    \item K-means is sensitive to outliers. Outliers could be errors in the data recording or some special data points with very different values.
+    \item Depending on how centroids are initialized, K-means will not always find the same clusters.
+    \item Not suitable for discovering clusters that are not hyper-ellipsoids (or hyper-spheres).
+\end{enumerate}
+\subsubsection{K-mean algorithm: outliers}
+Outliers can lead to undesirable clusters.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/kmeans_8.png}
+    \end{subfigure}
+\end{figure}
+How do we deal with outliers?
+\begin{itemize}
+    \item \textbf{Remove potential outliers} in the clustering process e.g. monitor possible outliers over iterations and then decide to remove them.
+    \item \textbf{Random sampling:} Only choose a small subset of data points. The chance of selecting an outlier is small.
+\end{itemize}
+\subsubsection{Vector quantization}
+We can also interpret K-means clustering as an approach for lossy data compression. Suppose that the representation of each data point is approximated but its cluster centroid. The compressed dat consists:
+\begin{itemize}
+    \item a codebook of $k$ prototypes, the centroids vectors.
+    \item The cluster index for each data point: a discrete symbol in $\{1,\dots,K\}$.
+\end{itemize}
+The K-means loss function is the reconstruction error of this compression. This approach is an instance of vector quantization.
+\\\\
+\textbf{Space complexity:}\\
+Suppose we have $N$ data points of $D$-dimensional vectors with $C$ bits required to represent a real-valued scalar. The original data has space complexity $O(NDC)$. 
+The quantized space complexity is $O(KCD+N\log_2K)$:
+\begin{itemize}
+    \item $O(KDC)$ for the code book
+    \item $O(N\log_2K)$ to represent the data vectors, which is usually the dominant term.
+\end{itemize}
+\textbf{Image compression example:}\\
+Say we have a greyscale image with $N=200\times 320=64000$ pixels. Each pixel is $D=1$ with integer intensity in the range 0 to 256 (8-bits, so $C=8$).
+The original image: $NC=512k$ bits. Then, the compressed image: $N\log_2K+KC$
+\begin{itemize}
+    \item With $K=4$: $128k$ bits (compression factor 4)
+    \item With $K=8$: $192k$ bits (compression factor 2.6)
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/kmeans_9.png}
     \end{subfigure}
 \end{figure}
 \end{document}
