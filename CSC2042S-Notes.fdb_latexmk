@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1791821898.43726 "c:/Users/gogy/Documents/Coding/CSC2042S-Notes/CSC2042S-Notes.tex" "CSC2042S-Notes.pdf" "CSC2042S-Notes" 1791821901.57758 0
+["pdflatex"] 1792756654.32341 "c:/Users/gogy/Documents/Coding/CSC2042S-Notes/CSC2042S-Notes.tex" "CSC2042S-Notes.pdf" "CSC2042S-Notes" 1792756657.56342 0
   "C:/Users/gogy/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1791451275 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/gogy/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1095.pk" 1790419094 12668 3c0330dbd519c4d96e901172bcc06c8d ""
   "C:/Users/gogy/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1762938995 13333028 d99da4380033ff1f8a9afddaea318caf ""
@@ -192,10 +192,10 @@
   "C:/Users/gogy/AppData/Local/Programs/MiKTeX/tex/latex/trimspaces/trimspaces.sty" 1253169183 1380 971a51b00a14503ddf754cab24c3f209 ""
   "C:/Users/gogy/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/gogy/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "CSC2042S-Notes.aux" 1791821901 14694 872ed463bbf4170e900bc248e4bc7233 "pdflatex"
-  "CSC2042S-Notes.out" 1791821901 18249 37c0a9b81c238accd114a79e4545e3d1 "pdflatex"
-  "CSC2042S-Notes.tex" 1791821897 84599 0369aae12aae1a317157f37f461ef4cf ""
-  "CSC2042S-Notes.toc" 1791821901 10103 fe483898f0f7432619833121af1a1850 "pdflatex"
+  "CSC2042S-Notes.aux" 1792756657 15399 4f4a37a5f0e03957a675e4d421237412 "pdflatex"
+  "CSC2042S-Notes.out" 1792756657 19204 328ef0fc37e43d24c9bc1bbe556ca0ee "pdflatex"
+  "CSC2042S-Notes.tex" 1792756650 88010 3e569c7d3e628a80a2fae7897333c828 ""
+  "CSC2042S-Notes.toc" 1792756657 10603 942caf4e206ee242945f9eaf407e873f "pdflatex"
   "Pictures/ANN_1.png" 1790422521 101700 ba8be4759002801c78a603ff2e4cf702 ""
   "Pictures/ANN_10.png" 1791574474 245451 87fcedab63abfa704c9dcb87ba7a1ef5 ""
   "Pictures/ANN_11.png" 1791574474 37161 0d12ffb73d5d7ae9643cbb2c109489fe ""
@@ -231,8 +231,13 @@
   "Pictures/R_2.png" 1790418929 73456 1df503ecc620c64cbc67bc8e5a7fe53c ""
   "Pictures/SLR_1.png" 1790418929 52438 3d1ab7f0da1e351f2f6d14b042374578 ""
   "Pictures/SLR_2.png" 1790418929 53719 91ff5829ace5590827c5144fe2065f8e ""
+  "Pictures/supervised_1.png" 1792753457 1066078 ef62dee71b71b6d568be2bd610c3c936 ""
+  "Pictures/supervised_2.png" 1792753758 503709 419ae1914ebc54e4f4feeafd73540033 ""
+  "Pictures/supervised_3.png" 1792754395 20714 1896151024f35a61f3f339a8f3710c44 ""
+  "Pictures/supervised_4.png" 1792756205 58576 e0cde0f41ede53c0f648d220baaf5965 ""
+  "Pictures/supervised_5.png" 1792756525 23951 f885cf3b12322a71cfd810415d49c7df ""
   "UCT-logo.png" 1790418929 191843 09124d39a259ade45d5013ae4d89abf1 ""
-  "c:/Users/gogy/Documents/Coding/CSC2042S-Notes/CSC2042S-Notes.tex" 1791821897 84599 0369aae12aae1a317157f37f461ef4cf ""
+  "c:/Users/gogy/Documents/Coding/CSC2042S-Notes/CSC2042S-Notes.tex" 1792756650 88010 3e569c7d3e628a80a2fae7897333c828 ""
   (generated)
   "CSC2042S-Notes.aux"
   "CSC2042S-Notes.log"

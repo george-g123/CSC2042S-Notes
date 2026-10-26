@@ -94,7 +94,73 @@ There are many types:
 
 \subsubsection{Unsupervised learning}
 The problem is framed as finding structure in $x$ without labels (no $y$). Inputs are examples in the dataset represented by \textit{features}. Data $D$ is $|D|$ examples $\{x_1,x_2,\dots,x_{|D|}\}$ without any labels. Given a new example $x$, where does this fit into the data? 
+For a more detailed overview of unsupervised learning, please look at the later section.
 
+\subsubsection{Supervised learning}
+The problem is framed as mapping inputs $x$ to outputs $y$. Inputs are examples in the dataset represented by \textit{features}. and outputs are \textit{labels} describing the data examples.
+Data $D$ is $|D|$ pairs $\{(x_1,y_1),(x_2,y_2),\dots,(x_{|D|},y_{|D|})\}$. The goal of supervised learning is to learn a function $h:X\to Y$ that can map inputs to outputs. Given a new example $x$, you can use $h(x)$ to predict the output.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/supervised_1.png}
+    \end{subfigure}
+\end{figure}
+
+\subsection{Types of supervised learning}
+The two different types are distinguished by the type of the tagret variable $y$:
+\begin{itemize}
+    \item \textbf{Classification:} Predict a \textbf{discrete/categorical} target variable i.e. from a set of possible values.
+    \item \textbf{Regression:} Predict a \textbf{continuous} target variable i.e. output can be any real valued number in a range.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/supervised_2.png}
+    \end{subfigure}
+\end{figure}
+
+\subsection{What is a machine learning model?}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/supervised_3.png}
+    \end{subfigure}
+\end{figure}
+\begin{definition}[Model]
+A \textbf{model} is a mathematical representation of a real-world process used to make predictions or decisions. A model is defined by its:
+\begin{itemize}
+    \item \textbf{architecture}, the type of machine learning model (e.g perceptron, logistic regression, a neural network)
+    \item and its \textbf{parameters}, the internal components (numerical values) of the model that are leanred from datt to accurately represent the data.
+\end{itemize}
+\end{definition}
+
+\subsection{Terminology}
+\begin{definition}[Training]
+\textbf{Training} is the process of teaching a machine learning model to make predictions or decisions based on data. The model learns patterns and relationships from a dataset to improve its performance.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/supervised_4.png}
+    \end{subfigure}
+\end{figure}
+\end{definition}
+\begin{definition}[Parameter]
+A \textbf{parameter} is a variable in a model that the algorithm adjusts during training. Parameters are the internal components of the model that are learned from the data to make accurate predictions.
+\end{definition}
+\subsubsection{Linear regression example}
+We want to predict the house price for an estate agent. Given the number of rooms $x$ in a house, what price $y$ should it sell for?
+\\\\
+We can use a simple formula:
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/supervised_5.png}
+    \end{subfigure}
+\end{figure}
+$\quad$\\[-1em]
+This is called a linear regression model and can be formalized as: 
+Let $x$ be the number of rooms and $y$ be the predicted price, then $y=wx+b$.
+The parameters $w$ and $b$ are values we want to learn during training.
 
 \subsection{Simple linear regression}
 A simple linear regression model predicts the output as a linear function of one input feature $x$: $y=wx+b$, otherwise known as a straight line function. Changes in $x$ imply a proportional change in $y$. Even if the relationship is not perfectly linear, linear regression can still be effective as an approximation or baseline model.
