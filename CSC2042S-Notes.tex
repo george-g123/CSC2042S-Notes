@@ -72,8 +72,9 @@
 \begin{titlepage}
     \centering
     
-    \includegraphics[width=0.4\textwidth]{UCT-logo.png}\\[2cm] 
-    
+    % \includegraphics[width=0.4\textwidth]{UCT-logo.png}\\[2cm] 
+    $\quad$\\[6cm]
+
     \textsc{\LARGE University of Cape Town}\\[1.5cm]
     
     \rule{\linewidth}{0.5mm} \\[0.4cm]
@@ -1869,6 +1870,9 @@ Next, we need to visit the vanishing gradient problem. When does it occur and wh
 \end{itemize}
 
 \section{Convolution Neural Networks}
+\begin{note}[AI usage]
+While the primary knowledge is based in the course material, the majority of the following section was summarized by Google Gemini (v4 Argon + High thinking level).
+\end{note}
 \subsection{Computer vision}
 \subsubsection{How computers "see" images?}
 While humans perceive images as a continuous stream of light, computers are fundamentally discrete and interpret images as numerical matrices of pixel values.
@@ -2419,4 +2423,465 @@ The original image: $NC=512k$ bits. Then, the compressed image: $N\log_2K+KC$
         \includegraphics[width=\linewidth]{Pictures/kmeans_9.png}
     \end{subfigure}
 \end{figure}
+
+\subsection{K-nearest neighbors (k-NN)}
+K-nearest neighbors is a simple classifier that is related to, but distinct from K-means clustering.
+It is a supervised learning method. Given a new data point $x_{\ast}$, we want to make a prediction $\hat{y}_{\ast}$ for the output label corresponding to $x_{\ast}$.
+Intuitively, if the test data point $x_{\ast}$ is close to training data point $x_i$, then the prediction $y_{\ast}$ should be close to $y_i$. 
+As with K-means clustering, we will use a distance function such as the Euclidean distance.
+\\\\
+For 1-nearest neighbor, the simplest approach is to find the training data point $x_i$ with the shortest distance to $x_{\ast}$ and use its label $y_i$.
+However, in practice, data is noisy and don't correspond to an ideal underlying distribution, therefore we should not rely on a single data point only to make predictions.
+Rather, find the $k$ data points closest to $x_{\ast}$ and aggregate their output labels to make a prediction. 
+For classification, use a majority vote. For regression, take the average.
+\\\\
+In classification, the model defines a decision boundary that partitions the vector space into different output classes. 
+The choice of $k$ will affect this decision boundary. If it's too small, then the model will be too sensitive to noise.
+If we make $k$ too large, then the averaging effect will wash out interesting patterns in the data.
+\subsubsection{Algorithm}
+Given a test input $x_{\ast}$, compute the distances $||x_i-x_{\ast}||$ for all training data points $i=1,\dots,|D|$.
+Let $N_{\ast}=\{i:x_i\text{ is one of the }k\text{ data points closest to }x_{\ast}\}$. Then, compute the prediction $\hat{y}_{\ast}$:
+\begin{itemize}
+    \item $\hat{y}_{\ast}=\text{MajorityVote }\{y_j:j\in N_{\ast}\}$ (classification)
+    \item $\hat{y}_{\ast}=\text{Average }\{y_j:j\in N_{\ast}\}$ (regression)
+\end{itemize}
+\subsubsection{Example}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/KNN_1.png}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/KNN_2.png}
+    \end{subfigure}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{Pictures/KNN_3.png}
+    \end{subfigure}
+\end{figure}
+\subsubsection{Disadvantages}
+\begin{enumerate}
+    \item Computational complexity: to classify a data point, we need to run through the entire dataset (so it becomes problematic for large datasets).
+    \item Distance functions may not accurately reflect relations between data points.
+    \item Curse of dimensionality: when the data dimensionality is large, the data points are all very far from each other.
+\end{enumerate}
+
+\subsection{Principal component analysis (PCA)}
+PCA, which is the most commonly used method for dimensionality reduction, takes the role of reducing the number of dimensions or features in the data. It transforms high-dimensional data into a lower-dimensional representation.
+It does so in a way that preserves as much of the variance in the data as possible. Equivalently, it minimizes the reconstruction error of mapping the data back into the original high-dimensional vector space.
+\subsubsection{Motivation}
+\begin{enumerate}
+    \item Curse of dimensionality: Challenges related to modelling data in higher dimensions. Data becomes sparse and distances become less meaningful.
+    \item Visualization: project high-dimensional data to 2D or 3D.
+    \item Computational efficiency.
+    \item Noise reduction: by keeping only the most important components of the underlying data distribution, noise can be filtered out.
+\end{enumerate}
+\subsubsection{Overview}
+PCA find the directions (axes) along which a dataset varies the most. It uncovers the most dominant features explaining as much of the data as possible.
+The principal components are:
+\begin{itemize}
+    \item Ordered by the amount of variance they explain (the first explains the most, followed by the second, etc.) to each other.
+    \item Orthogonal (perpendicular) to each other.
+    \item Linear combinations of the original features.
+\end{itemize}
+\subsubsection{The setup}
+Suppose that our dataset consists of $N$ data points $x\in\mathbb{R}^D$ of dimension $D$. The data can be represented by a matrix:
+$$
+X=\begin{bmatrix}
+    x_{11} & \cdots & x_{1D} \\
+    \vdots & \ddots & \vdots \\
+    x_{N1} & \cdots & x_{ND}
+\end{bmatrix}
+\quad\quad
+\text{where }X\in\mathbb{R}^{N\times D}
+$$
+We need to normalize the data to have a mean of zero:
+\begin{itemize}
+    \item The mean vector is $\bar{x}=\frac{1}{N}\sum_{j=1}^{N}x_j$.
+    \item The mean matrix is $\bar{X}=\begin{bmatrix}
+        1 \\
+        \vdots \\
+        1
+    \end{bmatrix}\bar{x}$
+    \item Subtract the mean matrix from $X$ to get: $X:=X-\bar{X}$.
+\end{itemize}
+We want to project data point $x_n\in\mathbb{R}^{D}$ to a vector $z_n\in\mathbb{R}^{M}$ in the low-dimensional projection, where $M$ is the projected dimensionality with $M<D$.
+Define $M$ projection vectors $w_1,w_2,\dots,w_M\in\mathbb{R}^{D}$. The projection vectors are unit length and orthogonal. That is,
+$$
+||w_i||=1\text{ and }w_i^{\top}w_j=0\quad\forall i\neq j
+$$
+The projection of $x_n$ onto the $m$-th dimension is $z_{nm}=w_m^{\top}x_n$. Mapping $x_n$ to $z_n$ (across all dimensions):
+$$
+z_n=\begin{bmatrix}
+    z_{n1} \\
+    \vdots \\
+    z_{nM}
+\end{bmatrix}
+=\begin{bmatrix}
+    w_1^{\top}x_n \\
+    \vdots \\
+    w_M^{\top}x_n
+\end{bmatrix}
+=\begin{bmatrix}
+    \leftarrow w_1^{\top} \rightarrow \\
+    \vdots \\
+    \leftarrow w_M^{\top} \rightarrow 
+\end{bmatrix}
+\begin{bmatrix}
+    x_{n1} \\
+    \vdots \\
+    x_{nD}
+\end{bmatrix}
+=W^{\top}x_n
+\quad\quad\text{where }
+\begin{bmatrix}
+    w_{11} & \cdots & w_{M1} \\
+    \vdots & \ddots & \vdots \\
+    w_{1D} & \cdots & w_{MD} 
+\end{bmatrix}
+$$
+To map the projected vector $z_n$ back to the original vector space (approximating the original value):
+$$
+\hat{x}_n=z_nW
+$$
+In short:
+\begin{enumerate}
+    \item Normalize the data $X$ to have zero-mean.
+    \item Calculate the covariance matrix $\frac{1}{N}X^{\top}X$.
+    \item Find the $D$ eigenvectors and eigenvalues of the covariance matrix.
+    \item Choose the eigenvectors corresponding to the $M$ highest eigenvalues. This forms the projection matrix $W$.
+    \item Project the data to the lower dimensional space: $Z=XW$ 
+\end{enumerate}
+\subsubsection{The covariance matrix}
+The covariance matrix represents the covariance pairs of dimensions (features) in the dataset. 
+Given the dataset matrix $X\in\mathbb{R}^{N\times D}$, the covariance between dimensions $i$ and $j$ is:
+$$
+C_{ij}=\frac{1}{N}\sum_{k=1}^{N}(x_{ki}-\mu_i)(x_{kj}-\mu_j)
+$$
+Because we assume the data has been mean-centered, the means are 0. Therefor, we can compute the covariance matrix with matrix multiplication:
+$$
+C=\frac{1}{N}X^{\top}X\quad\quad\text{where }C\in\mathbb{R}^{D\times D}
+$$
+\subsubsection{The projection matrix}
+For square matrix $C$, the solutions to the equation $Cw=\lambda w$ are the pairs of eigenvalues $\lambda$ and eigenvectors $w$.
+In PCA, we find the $M$ largest eigenvalues and eigenvectors of the covariance matrix $C$ (where $M<D$). 
+The matrix $W\in\mathbb{R}^{D\times M}$ which has the $M$ largest eigenvectors as its columns is the projection matrix.
+To project the data into $M$ dimensions with PCA, we compute:
+$$
+Z=XW\quad\quad\text{where }Z\in\mathbb{R}^{N\times M}
+$$
+\subsubsection{Number of components}
+Methods for choosing the number of principal components $M$ to keep:
+\begin{itemize}
+    \item Set a threshold based on the cumulative proportion of the variance explained by the components kept (e.g. 95\%). This can be computed with the eigenvalues:
+$$
+\frac{\sum_{i=1}^{M}\lambda_i}{\sum_{j=1}^{D}\lambda_j}
+$$
+    \item Plot the eigenvalues and look for the "elbow" where the curve flattens.
+    \item Choose the dimensionality that gives the best performance on the downstream task (e.g. when doing clustering after PCA).
+\end{itemize}
+\subsubsection{Advantages}
+\begin{enumerate}
+    \item Suitable when there are linear relationships in the data. Merges correlated features.
+    \item The projections learnt by PCA are interpretable.
+    \item Fast to compute.
+    \item Good choice for preprocessing for other machine learning algorithms.
+    \item Can be very effective for data compression.
+\end{enumerate}
+\subsubsection{Disadvantages}
+\begin{enumerate}
+    \item Assumes linear relationships in the data. Not suitable for all data types.
+    \item Sensitive to the scale of features. Normalize the data in advance.
+    \item All features are treated equally.
+    \item Harder to interpret with high-dimensional data. After the top few components, the meaning of the components is often hard to interpret.
+    \item May lose important information if the number of components is too small.
+    \item May not be the best method for visualization.
+\end{enumerate}
+\subsubsection{Example}
+Say we have data:
+$$
+X_{\text{row}}=\begin{bmatrix}
+    15 & 9 \\
+    13 & 11 \\
+    7 & 1 \\
+    5 & 3
+\end{bmatrix}
+$$
+\textbf{Step 1: Check centering}\\
+Col 1: $(15+13+7+5)/4=40/4=10$\\
+Col 2: $(9+11+1+3)/4=24/4=6$ \\
+Thus, the mean vector is $\tilde{x}=[10,6]$. Then, the centered points are: \\
+\begin{tblr}{width=\textwidth, colspec={X[l] X[l] X[l]}, row{1}={font=\bfseries}}
+\toprule
+Points & Row & Centered points $X_{\text{row}}-\tilde{x}$ \\
+\midrule 
+1 & $[15,9]$ & $[15-10,9-6]=[5,3]$ \\
+2 & $[13,11]$ & $[13-10.11-6]=[3,5]$ \\
+3 & $[7,1]$ & $[7-10,1-6]=[-3,-5]$ \\
+4 & $[5,3]$ & $[5-10,3-6]=[-5,-3]$ \\
+\bottomrule
+\end{tblr}
+$$
+X_{\text{row}}\rightarrow\text{Centering}\rightarrow X=\begin{bmatrix}
+    5 & 3 \\
+    3 & 5 \\
+    -3 & -5 \\
+    -5 & -3
+\end{bmatrix}
+$$
+\textbf{Step 2: Covariance matrix}\\
+\begin{align*}
+C&=\frac{1}{4}X^{\top}X\\
+&=\begin{bmatrix}
+    5 & 3 & -3 & -5 \\
+    3 & 5 & -5 & -3 
+\end{bmatrix}
+\begin{bmatrix}
+    5 & 3 \\
+    3 & 5 \\
+    -3 & -5 \\
+    -5 & -3
+\end{bmatrix} \\
+&=\frac{1}{4}\begin{bmatrix}
+    68 & 60 \\
+    60 & 68
+\end{bmatrix} \\
+&=\begin{bmatrix}
+    17 & 15 \\
+    15 & 17
+\end{bmatrix}
+\end{align*}
+\textbf{Step 3: Eigenvectors \& eigenvalues}\\
+We need to solve $Cw=\lambda w$. It follows that
+$$
+Cw=\lambda w\iff Cw-\lambda w=0\iff (C-\lambda I)w=0
+$$
+If $C-\lambda I$ were invertible, the only solution would be $w=0$, which is not a direction. We need a non-zero direction.
+$$
+C-\lambda I=\begin{bmatrix}
+    17-\lambda & 15 \\
+    15 & 17-\lambda
+\end{bmatrix}
+$$
+Now, we take the determinant of this matrix:
+\begin{align*}
+    \det(C-\lambda I)=(17-\lambda)^2-15^2&=0\\
+    (\lambda-32)(\lambda-2)&=0
+\end{align*}
+Thus, $\lambda_1=32$ and $\lambda_2=2$. For $\lambda_1$, we have:
+\begin{align*}
+    \begin{bmatrix}
+        17-32 & 15 \\
+        15 & 17-32
+    \end{bmatrix}
+    \begin{bmatrix}
+        w_a \\
+        w_b
+    \end{bmatrix}
+    &=0 \\
+    -15w_a+15w_b&=0 \\
+    \therefore w_a&=w_b
+\end{align*}
+Taking the basis vector $[1,1]$, we determine that:
+$$
+w_1=\frac{1}{\sqrt{2}}[1,1]\approx[0.76,0.76]
+$$
+For $\lambda_2$, we have:
+\begin{align*}
+    \begin{bmatrix}
+        17-2 & 15 \\
+        15 & 17-2
+    \end{bmatrix}
+    \begin{bmatrix}
+        w_a \\
+        w_b
+    \end{bmatrix}
+    &=0 \\
+    15w_a+15w_b&=0 \\
+    \therefore w_a&=-w_b
+\end{align*}
+Taking the basis vector $[1,-1]$, we determine that:
+$$
+w_2=\frac{1}{\sqrt{2}}[1,-1]\approx[0.76,-0.76]
+$$
+\textbf{Step 4: Choose best projection}
+\begin{flalign*}
+& \frac{\lambda_1}{\lambda_1+\lambda_2}=\frac{32}{32+2}\approx 94.12\% \text{ (Highest!)} &\\
+& \frac{\lambda_2}{\lambda_1+\lambda_2}=\frac{2}{32+2}\approx 5.88\% &
+\end{flalign*}
+And so, we pick $w_1=\frac{1}{\sqrt{2}}[1,1]$ as our projection vector.
+\\\\
+\textbf{Step 5: Project the points}\\
+\begin{minipage}{0.5\textwidth}
+Project the first point $[5,3]$:
+\begin{flalign*}
+z_1&=x_1\cdot w_1 &\\
+&=[5,3]\cdot\frac{1}{\sqrt{2}}[1,1] &\\
+&=\frac{5+3}{\sqrt{2}} &\\
+&\approx 5.66 &
+\end{flalign*}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+Project the second point $[3,5]$:
+\begin{flalign*}
+z_2&=x_2\cdot w_1 &\\
+&=[3,5]\cdot\frac{1}{\sqrt{2}}[1,1] &\\
+&=\frac{3+5}{\sqrt{2}} &\\
+&\approx 5.66 &
+\end{flalign*}
+\end{minipage}
+$\quad$\\[1em]
+\begin{minipage}{0.5\textwidth}
+Project the third point $[-3,-5]$:
+\begin{flalign*}
+z_3&=x_3\cdot w_1 &\\
+&=[-3,-5]\cdot\frac{1}{\sqrt{2}}[1,1] &\\
+&=\frac{-3-5}{\sqrt{2}} &\\
+&\approx -5.66 &
+\end{flalign*}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+Project the fourth point $[-5,-3]$:
+\begin{flalign*}
+z_4&=x_4\cdot w_1 &\\
+&=[-5,-3]\cdot\frac{1}{\sqrt{2}}[1,1] &\\
+&=\frac{-5-3}{\sqrt{2}} &\\
+&\approx -5.66 &
+\end{flalign*}
+\end{minipage}
+In the end, we get that
+$$
+Z=\begin{bmatrix}
+    z_1 \\
+    z_2 \\
+    z_3 \\
+    z_4
+\end{bmatrix}
+=\begin{bmatrix}
+    5.66 \\
+    5.66 \\
+    -5.66 \\
+    -5.66
+\end{bmatrix}
+$$
+
+\section{Ethics}
+\begin{note}[AI usage]
+While the primary knowledge is based in the course material, the majority of the following section was summarized by Google Gemini (v4 Argon + High thinking level).
+\end{note}
+\subsection{What is ethics and where is AI today?}
+\begin{definition}[Ethics]
+\textbf{Ethics} is the philosophical study of moral phenomena centered on distinguishing right from wrong.
+It investigates normative questions about what people ought to do and which behaviors are morally right.
+Ethics defines what is good for both the individual and society, and establishes the duties that people owe to themselves and to one another.
+\end{definition}
+\subsubsection{What is AI ethics?}
+Because thics provides moral principles to discern right from wrong, AI ethics is a multidisciplinary field that studies how to optimize the beneficial impact of AI while mitigating risks.
+\subsubsection{Global AI governance}
+According to UNESCO's Global AI Ethics and Governance Observatory, getting AI governance right is one of the most consequential challenges of our time and requires mutual learning based on lessons and good practices from different juristictions worldwide.
+The observatory serves as a global resource for policymakers, regulators, academics, the private sector, and civil society to find solutions to pressing AI challenges.
+\subsubsection{Historical warning}
+"It seems probable that once machine thinking method had started, it would not take long to outstrip our freeble powers. 
+... At some stage therefore we should have to expect the machines to take control" - Alan Turing 1951 (Intelligent Machinery, A Heretical Theory)
+\subsubsection{Where are we today?}
+The current milestones in AI include:
+\begin{itemize}
+    \item \textbf{Generative AI:} Systems such as DALL-E that generate novel visual content.
+    \item \textbf{Language translation:} Automated translation between languages (such as English to French).
+    \item \textbf{Game playing:} Systems such as AlphaGo.
+    \item \textbf{Scientific discovery:} Protein folding models that predict 3D structures, including $\alpha$-helices, $\beta$-sheets, and hydrophobic cores, from amino acid sequences.
+\end{itemize}
+\subsubsection{Three choice for the future of AI}
+\begin{enumerate}
+    \item \textbf{Black-box AI:} Continuity to build superior AI systems that we do not actually understand.
+    \item \textbf{No AI:} Rejecting AI and relying purely on manual human labor.
+    \item \textbf{Provably safe and controllable AI:} Designing AI systems backed by absolute mathematical guarantees of safety.
+\end{enumerate}
+
+\subsection{Why AI ethics matters (beyond code)}
+Ai is no longer a futuristic concept; it is actively integrated into daily life across critical sectors:
+\begin{itemize}
+    \item \textbf{Healthcare:} Assisting medical professionals in diagnosing patients.
+    \item \textbf{Finance:} Determining who is approved or denied for a loan.
+    \item \textbf{Justice system:} Informing high-stakes parole and criminal sentencing decisions.
+    \item \textbf{Social media:} Curating the daily information and content feeds that users consume.
+\end{itemize}
+
+\subsection{The 5 pillars of AI ethics}
+\subsubsection{Pillar 1: Bias and fairness}
+\begin{definition}[Algorithmic bias]
+\textbf{Algorithmic bias} occurs when an AI system produces results that are systematically prejudiced against specific groups of people.
+\end{definition}
+$\quad$\\[-1em]
+The key question becomes: we as developers must ask why this bias occurs and whether it is intentional.
+\\\\
+\textbf{Case study: Amazon's recruiting AI} \\
+Amazon built a recruiting algorithm trained on 10 years of its own historical hiring data. This is an ethical problem
+because the tech industry and Amazon's past applicants over that 10-year period were predominantly men, the AI taught itself that male candidates were preferable.
+It began penelizing CVs that included the word "women's" (such as captain of women's chess club).
+The final outcome saw Amazon scrapping the sexist AI tool.
+\subsubsection{Pilar 2: Transparency and explainability}
+In modern day AI architectures, we run into the block box issue. Deep neural networks are so complex and intricate that even their creators cannot fully explain why the model arrived at a specific decision.
+Why the lack of explainability is dangerous:
+\begin{itemize}
+    \item \textbf{Appeals:} Citizens cannot meaningfully challenge or appeal an automated decision (such as rejected loan application) if nobody knows why the algorithm rejected them.
+    \item \textbf{Safety:} Society cannot trust autonomous systems (like self-driving cars) if we cannot predict or understand how they will react in novel situations.
+    \item \textbf{Debugging:} Engineers cannot fix a failing model if they cannot identify why it is making errors. 
+\end{itemize}
+\subsubsection{Pillar 3: Accountability}
+The core question is: when an AI system causes real-world harm, who is held legally and morally responsible?
+\\\\
+\textbf{Case study: Autonomous vehicle fatal accident}\\
+If a self-driving car causes a fatal crash, fault is ambiguous across multiple parties:
+\begin{itemize}
+    \item The owner riding inside the vehicle?
+    \item The vehicle manufacturer that built the hardware?
+    \item The software engineer who wrote the specific faulty code module?
+    \item The company that curated and collected the training dataset?
+\end{itemize}
+The current legal and moral frameworks are stuggling to keep up with this technological ambiguity.
+Accountability in autonomous systems ties directly into the classic philosophical thought experiment known as the trolley problem.
+It asks whether you should do nothing and allow a runaway trolley to kill five people, or actively pull a lever to divert the trolley onto a side track where it will sacrifice one person to save five.
+\subsubsection{Pillar 4: Privacy}
+Modern AI relies on vast quantities of data to function effectively, much of which is personal and sensitive.
+AI powers widespread surveillance through public facial recognition cameras, smart home devices listening to private conversations, and social media algorithms tracking user behavior online.
+In South Africa, the \textbf{Protection of Personal Information Act (POPIA)} enforces strict regulations on collecting, storing, and using personal data, making compliance a legal requirement for developers.
+\\\\
+\textbf{Case study: Predictive social media model}\\
+A social media company designs an AI solely to maximize user engagement and sell advertisements by tracking likes, viewing habits, how long a user pauses on a photo, location data, and typing patterns.
+This is an ethical problem. Only using this metadata, the model becomes powerful enough to infer highly sensitive personal details that the user never consented to share, such as political leanings, sexual orientation, or the early stages of a mental health crisis.
+This inferred data can be exploited for manipulative targeted advertising or leaked in a data breach without the user's knowledge or consent.
+\subsubsection{Pillar 5: Safety and reliability}
+Ethical AI requires fundamental system robustness that goes beyond fairness and bias. 
+A model that achieves 99\% accuracy during training can still fail catastrophically when confronted with an unfamiliar real-world edge case.
+AI systems can be intentially manipulated and fooled by malicious inputs.
+\\\\
+\textbf{Case study: Self-driving car}\\
+Researchers tested the reliability of a self-driving car's computer vision system trained to recognize road signs.
+By placing a few small, strategically arranged pieces of black-and-white tape onto a stop sign, researchers tricked the AI into misclassifying a stop sign as a 120km/h speed limir sign with 99.9\% confidence.
+Even when a system performs well under normal conditions, hidden vulnerabilities make it unsafe for real-world deployment if malicious actors can exploit them to cause catastrophic accidents.
+
+\subsection{The path forward}
+The goal of AI is not to stop innovation, but to proactively build AI systems that benefit humanity. Here are the key principles of a repsonsible AI:
+\begin{enumerate}
+    \item \textbf{Human-in-the-loop:} Designing AI systems to augment, rather than replace, human decision-making in high-stakes environments.
+    \item \textbf{Privacy by design:} Embedding data privacy protections into the architecture of a system from the very beginning.
+    \item \textbf{Diverse teams:} Developing AI using diverse teams that reflect the demographics and perspectives of the society the AI will serve.
+    \item \textbf{Continous auditing:} Regularly testing and evaluating models for bias, fairness, and safety both before and after deployment.
+\end{enumerate}
+
+\subsection{Actionable checklist for developers}
+As a developer, you are on the front lines, and the ethical choices you make in your code have a massive societal impact.
+\begin{itemize}
+    \item \textbf{Question the data:} Investigate where your dataset originated and identify whose perspectives are missing.
+    \item \textbf{Think about the stakeholders:} Anticipate who could be harmed if your system fails or misfires.
+    \item \textbf{Advocate for ethics:} Speak up within your engineering teams and organizations about the potential ethical impacts of your work.
+    \item \textbf{Demand transparency:} Do not blindly accept a model's output. Work to understand why it makes specific predictions.
+    \item \textbf{Enforce algorithmic fairness:} Audit your models to verify that their predictions and error rates do not disproportionally harm specific demographic groups.
+\end{itemize}
 \end{document}
